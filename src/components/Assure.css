@@ -1,0 +1,111 @@
+/* src/components/Assure.css */
+
+.assure-section {
+    padding: 80px 5%; /* Top/bottom padding, horizontal padding */
+    background-color: #f7f9fc; /* Light background for the section */
+    font-family: 'Poppins', sans-serif; /* Example font, adjust if needed */
+    text-align: center; /* Center the header text */
+}
+
+/* --- Section Header --- */
+.assure-header {
+    max-width: 800px;
+    margin: 0 auto 50px auto; /* Center and add bottom margin */
+}
+
+.assure-header h2 {
+    font-size: 38px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.assure-header p {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* --- Features Grid --- */
+.assure-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid for cards */
+    gap: 25px; /* Space between cards */
+    max-width: 1200px;
+    margin: 0 auto; /* Center the grid */
+}
+
+/* --- Individual Feature Card --- */
+.assure-card {
+    background-color: #ffffff; /* White background for cards */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Soft shadow */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effects */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #f0f0f0; /* Light border */
+}
+
+.assure-card:hover {
+    transform: translateY(-8px); /* Lift card on hover */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Icon Styling --- */
+.assure-card-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #e0f2f7; /* Light blue background for icons */
+    border-radius: 50%; /* Make it a circle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.assure-card-icon i {
+    font-size: 26px;
+    color: #5DADE2; /* Blue color for icons */
+}
+
+/* --- Card Title --- */
+.assure-card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* --- Card Description --- */
+.assure-card p {
+    font-size: 15px;
+    color: #777;
+    line-height: 1.5;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .assure-header h2 {
+        font-size: 30px;
+    }
+    .assure-header p {
+        font-size: 16px;
+    }
+    .assure-features-grid {
+        grid-template-columns: 1fr; /* Single column on smaller screens */
+        padding: 0 20px; /* Add horizontal padding for small screens */
+    }
+    .assure-card {
+        padding: 25px;
+    }
+    .assure-card h3 {
+        font-size: 20px;
+    }
+    .assure-card p {
+        font-size: 14px;
+    }
+}

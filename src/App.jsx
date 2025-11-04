@@ -16,6 +16,7 @@ import Footer from "./components/Footer";
 import AuthPage from "./AuthPage";
 import Form from "./components/Form";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AssureSection from "./components/Assure";
 import MentalHealthAssessment from "./components/MentalHealthAssessment";
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
               <>
                 <main>
                   <HeroSection />
+                  <AssureSection />
                   <FeaturesSection />
                   <AnalyticsSection />
                   <AboutSection />

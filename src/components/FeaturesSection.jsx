@@ -1,40 +1,82 @@
-// FeaturesSection.jsx
-
+// src/components/FeaturesSection.jsx
 import React from 'react';
-import AnimatedSection from './AnimatedSection';
-import '../App.css';
+import './FeaturesSection.css'; // 🚀 Import the dedicated CSS file
 
-const CORE_SERVICES = [
-    { icon: '🧠', title: 'AI Diagnostics Engine', description: 'Real-time analysis of medical images and lab results with 98% accuracy.' },
-    { icon: '🌐', title: 'Telehealth Consults', description: 'Schedule video appointments instantly with specialists across the globe.' },
-    { icon: '🧬', title: 'Genomic Profiling', description: 'Personalized treatment plans based on your unique genetic blueprint.' },
-    { icon: '🤖', title: 'Robotic Surgery', description: 'Minimally invasive procedures for faster recovery and reduced risk.' },
-    { icon: '🔒', title: 'Secure Health Records', description: 'Encrypted, blockchain-backed patient data accessible only by you.' },
-    { icon: '📈', title: 'Predictive Wellness', description: 'Wearable data integration to predict and prevent future health issues.' },
+// Array of the 8 pillars, including emojis and background color hints
+const PILLARS = [
+  {
+    icon: '🧠',
+    title: 'Mental Health Assessment',
+    description: 'Understand your mental state with comprehensive, AI-powered evaluations.',
+    colorClass: 'feature-blue',
+  },
+  {
+    icon: '🧘‍♀️',
+    title: 'Therapy Sessions',
+    description: 'Connect with licensed therapists for personalized one-on-one support.',
+    colorClass: 'feature-purple',
+  },
+  {
+    icon: '🌿',
+    title: 'Yoga Monitoring',
+    description: 'Track your progress in yoga and meditation for enhanced mindfulness.',
+    colorClass: 'feature-green',
+  },
+  {
+    icon: '💬',
+    title: 'Doctor Chatbot',
+    description: 'Instant access to a smart AI chatbot for quick advice and guidance.',
+    colorClass: 'feature-pink',
+  },
+  {
+    icon: '📈',
+    title: 'Progress Dashboard',
+    description: 'Visualize your mental wellness journey with interactive dashboards.',
+    colorClass: 'feature-yellow',
+  },
+  {
+    icon: '📝',
+    title: 'Personalized Prescription',
+    description: 'Receive tailored recommendations for self-care and growth.',
+    colorClass: 'feature-lightgreen',
+  },
+  {
+    icon: '💖',
+    title: 'Self-Care Tips',
+    description: 'Access a library of practical tips and exercises for daily well-being.',
+    colorClass: 'feature-softpink',
+  },
+  {
+    icon: '😊',
+    title: 'Mood Tracking',
+    description: 'Log and analyze your moods over time to identify patterns and triggers.',
+    colorClass: 'feature-lightblue',
+  },
 ];
 
-const FeaturesSection = () => (
-    <section id="services" className="features-section content-padding">
-        <AnimatedSection>
-            <div className="text-center-header">
-                <div className="section-label">Core Services & Technology</div>
-                <h2>6 Pillars of Aetheria's Futuristic Care</h2>
-                <p className="feature-subtitle">Our services merge cutting-edge research with compassionate human insight.</p>
+const FeaturesSection = () => {
+  return (
+    <section className="features-section">
+      <div className="features-header">
+        {/* 🌟 Added an emoji for visual appeal in the title */}
+        <h2>8 Pillars of Serenium's Futuristic Care 🌟</h2>
+        <p>Serenium offers a diverse range of services designed to support every aspect of your mental well-being.</p>
+      </div>
+
+      <div className="features-pillars-grid">
+        {PILLARS.map((pillar, index) => (
+          <div className={`feature-card ${pillar.colorClass}`} key={index}>
+            <div className="feature-card-icon">
+              {/* Using emojis as the icon */}
+              <span role="img" aria-label={pillar.title}>{pillar.icon}</span>
             </div>
-        </AnimatedSection>
-        
-        <div className="features-grid">
-            {CORE_SERVICES.map((service, index) => (
-                <AnimatedSection key={index} delay={0.1 + index * 0.08}>
-                    <div className="feature-card">
-                        <div className="card-icon">{service.icon}</div>
-                        <h3 className="card-title">{service.title}</h3>
-                        <p className="card-description">{service.description}</p>
-                    </div>
-                </AnimatedSection>
-            ))}
-        </div>
+            <h3>{pillar.title}</h3>
+            <p>{pillar.description}</p>
+          </div>
+        ))}
+      </div>
     </section>
-);
+  );
+};
 
 export default FeaturesSection;

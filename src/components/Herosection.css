@@ -1,0 +1,214 @@
+/* src/components/Hero.css */
+
+/* --- 1. OVERALL LAYOUT (Static, Two-Column) --- */
+
+.hero-section {
+    background-color: #f7f9fc; /* Light background from the image */
+    padding: 120px 0; /* Add top padding to move content below the Navbar */
+    min-height: 80vh;
+    overflow: hidden; /* Hide the extra slides */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Hide all carousel controls and extra slides */
+.hero-carousel-wrapper {
+    /* Ensure we only show one slide and fill the space */
+    width: 100%; 
+    display: block; 
+}
+.hero-slide {
+    display: none; /* Hide all slides by default */
+}
+.hero-slide.static-active {
+    display: block; /* Only show the slide with the static-active class (index 0) */
+}
+.carousel-dots-container,
+.hero-trust-bar {
+    display: none; /* Hide these components to match the new design */
+}
+
+/* Main Grid Layout */
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    align-items: center;
+    max-width: 1200px; /* Constrain width */
+    margin: 0 auto;
+    padding: 0 5%;
+    gap: 50px;
+}
+
+/* --- 2. TEXT CONTENT & ACTIONS --- */
+.hero-main-content h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.hero-subtitle {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 15px;
+}
+
+/* Blue Primary Button */
+.btn-primary-new {
+    background-color: #5DADE2; /* Blue */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn-primary-new:hover {
+    background-color: #4a91c7;
+}
+
+/* Secondary Button (Talk to a Therapist) */
+.btn-secondary-new {
+    background-color: white;
+    color: #5DADE2;
+    border: 1px solid #5DADE2;
+    border-radius: 6px;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn-secondary-new:hover {
+    background-color: #f0f8ff;
+}
+
+
+/* --- 3. CSS LOGO DESIGN (Visual Panel) --- */
+
+.hero-visual-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    /* Optional: for the purple border seen in the image analysis */
+    /* border: 1px solid #9980FA; */ 
+    height: 400px; 
+}
+
+.visual-display-css {
+    /* This is the large circular container */
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    /* Gradient border effect */
+    background: radial-gradient(circle at center, white 90%, transparent 100%);
+    position: relative;
+}
+
+.mind-ease-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-circle {
+    /* The outer gradient circle that encompasses the whole icon */
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    /* Gradient border from the image */
+    background: linear-gradient(135deg, #7b68ee 0%, #5DADE2 100%);
+    opacity: 0.1; /* Make it transparent so it looks like a background glow */
+}
+
+/* Brain Structure */
+.logo-brain {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* Above the circle */
+}
+
+.brain-half {
+    width: 125px;
+    height: 250px;
+    background: #5DADE2; /* Base color for the brain halves */
+    position: relative;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); /* Full rectangle base */
+}
+
+.left {
+    border-radius: 125px 0 0 125px;
+    /* Create the segmented look using shadows/borders */
+    box-shadow: inset 1px 0 0 white, 
+                inset 10px 10px 0 white,
+                inset 10px -10px 0 white;
+}
+
+.right {
+    border-radius: 0 125px 125px 0;
+    /* Create the segmented look using shadows/borders */
+    box-shadow: inset -1px 0 0 white, 
+                inset -10px 10px 0 white,
+                inset -10px -10px 0 white;
+}
+
+.brain-center {
+    /* Vertical line separating the hemispheres */
+    position: absolute;
+    width: 2px;
+    height: 250px;
+    background-color: white;
+}
+
+/* Heart Structure (Overlay) */
+.logo-heart {
+    position: absolute;
+    width: 100px;
+    height: 90px;
+    background-color: white; /* White background for the heart */
+    z-index: 20; 
+    transform: translateY(5px) rotate(-45deg);
+    border-radius: 50% 50% 50% 50%;
+}
+
+.logo-heart:before,
+.logo-heart:after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 90px;
+    background-color: white;
+    border-radius: 50% 50% 50% 50%;
+}
+
+.logo-heart:before {
+    top: -50px;
+    left: 0;
+}
+
+.logo-heart:after {
+    left: 50px;
+    top: 0;
+}

@@ -1,0 +1,149 @@
+/* src/components/FeaturesSection.css */
+
+.features-section {
+    padding: 80px 5%;
+    background-color: #ffffff; /* White background */
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+/* --- Section Header --- */
+.features-header {
+    max-width: 800px;
+    margin: 0 auto 60px auto;
+}
+
+.features-header h2 {
+    font-size: 38px;
+    font-weight: 800; /* Slightly bolder than the previous section */
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.features-header p {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* --- Features Grid (8 Columns on Large Screens) --- */
+.features-pillars-grid {
+    display: grid;
+    /* 4 columns on desktop, 2 on tablet, 1 on mobile */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 25px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* --- Individual Feature Card --- */
+.feature-card {
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align content to the left inside the card */
+    text-align: left;
+    height: 100%; /* Ensure all cards have the same height */
+}
+
+.feature-card:hover {
+    transform: translateY(-5px); /* Gentle lift on hover */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Feature Icon Container --- */
+.feature-card-icon {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.8); /* White background for the icon circle */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.5); /* Inner white shadow/ring */
+}
+
+/* --- Card Title and Description --- */
+.feature-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.5;
+    /* Added flex-grow to push content to the bottom/align text base */
+    flex-grow: 1; 
+}
+
+
+/* --- Distinct Background Colors (Matching Image Hues) --- */
+/* The color class names are applied to the feature-card element */
+
+/* Mental Health Assessment (Light Blue/Purple) */
+.feature-blue { 
+    background-color: #e6e6fa; 
+}
+/* Therapy Sessions (Soft Purple/Lavender) */
+.feature-purple { 
+    background-color: #f0e6ff; 
+}
+/* Yoga Monitoring (Mint Green) */
+.feature-green { 
+    background-color: #e0fff0; 
+}
+/* Doctor Chatbot (Soft Coral/Pink) */
+.feature-pink { 
+    background-color: #ffe0e6; 
+}
+/* Progress Dashboard (Soft Yellow/Cream) */
+.feature-yellow { 
+    background-color: #fffac0; 
+}
+/* Personalized Prescription (Light Green) */
+.feature-lightgreen { 
+    background-color: #e6ffe6; 
+}
+/* Self-Care Tips (Lavender/Pink) */
+.feature-softpink { 
+    background-color: #fae6ff; 
+}
+/* Mood Tracking (Pale Blue) */
+.feature-lightblue { 
+    background-color: #e6f7ff; 
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1200px) {
+    .features-pillars-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on smaller desktops */
+    }
+}
+
+@media (max-width: 992px) {
+    .features-pillars-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+    }
+}
+
+@media (max-width: 576px) {
+    .features-header h2 {
+        font-size: 30px;
+    }
+    .features-pillars-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        padding: 0 20px;
+    }
+    .feature-card {
+        padding: 20px;
+    }
+}

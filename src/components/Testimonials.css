@@ -1,0 +1,260 @@
+/* src/components/Testimonials.css */
+
+.testimonials-section {
+    padding: 80px 5%;
+    background-color: #f7f9fc; /* Light background for the section */
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+/* --- Section Header --- */
+.testimonials-header {
+    max-width: 700px;
+    margin: 0 auto 50px auto;
+}
+
+.testimonials-header h2 {
+    font-size: 40px;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.testimonials-header p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* --- Testimonials Grid --- */
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); /* 2 columns on desktop */
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto 40px auto; /* Add margin below grid for buttons */
+}
+
+/* --- Individual Testimonial Card --- */
+.testimonial-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left; /* Align text left within the card */
+    display: flex;
+    flex-direction: column;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Author Details --- */
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.author-details {
+    margin-left: 15px;
+}
+
+.author-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.author-rating .star {
+    color: #FFD700; /* Gold color for filled stars */
+    font-size: 20px;
+    margin-right: 2px;
+}
+.author-rating .star:not(.filled) {
+    color: #e0e0e0; /* Grey for unfilled stars */
+}
+
+.testimonial-text {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* --- CSS Avatars --- */
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #d1e8f7; /* Default light blue background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px; /* Size for potential initial letters */
+    color: #5DADE2; /* Text color for potential initial letters */
+    font-weight: 600;
+    overflow: hidden; /* Important for clip-path */
+    position: relative;
+    border: 2px solid #ffffff; /* White border around avatar */
+    box-shadow: 0 0 0 3px #bbdefb; /* Light blue outer ring */
+}
+
+/* Specific avatar styles (can be used to represent different people) */
+.avatar-1 { background-color: #ffe0b2; /* Lighter orange-pink */ } /* Sarah J. */
+.avatar-2 { background-color: #b2ebf2; /* Lighter blue-green */ } /* Mark T. */
+.avatar-3 { background-color: #e1bee7; /* Lighter purple */ } /* Jessica L. */
+.avatar-4 { background-color: #c8e6c9; /* Lighter green */ } /* David K. */
+.avatar-5 { background-color: #ffccbc; /* Light peach */ } /* Emily R. */
+.avatar-6 { background-color: #b3e5fc; /* Light sky blue */ } /* Alex C. */
+
+
+/* --- Action Buttons --- */
+.testimonials-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.btn-read-more,
+.btn-write-review,
+.btn-submit-review,
+.btn-cancel-review {
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-read-more {
+    background-color: #5DADE2; /* Blue */
+    color: white;
+    border: none;
+}
+.btn-read-more:hover {
+    background-color: #4a91c7;
+}
+
+.btn-write-review {
+    background-color: white;
+    color: #5DADE2;
+    border: 1px solid #5DADE2;
+}
+.btn-write-review:hover {
+    background-color: #f0f8ff;
+}
+
+.btn-submit-review {
+    background-color: #28a745; /* Green for submit */
+    color: white;
+    border: none;
+    margin-right: 10px;
+}
+.btn-submit-review:hover {
+    background-color: #218838;
+}
+
+.btn-cancel-review {
+    background-color: #dc3545; /* Red for cancel */
+    color: white;
+    border: none;
+}
+.btn-cancel-review:hover {
+    background-color: #c82333;
+}
+
+
+/* --- Write a Review Section --- */
+.write-review-section {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 50px auto; /* Center it below testimonials */
+    text-align: left;
+}
+
+.write-review-section h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 8px;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+    width: calc(100% - 20px); /* Account for padding */
+    padding: 12px 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #333;
+    background-color: #fcfcfc;
+}
+
+.form-group textarea {
+    resize: vertical; /* Allow vertical resizing */
+    min-height: 100px;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #5DADE2;
+    box-shadow: 0 0 0 3px rgba(93, 173, 226, 0.2);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .testimonials-grid {
+        grid-template-columns: 1fr; /* Single column on tablets */
+        max-width: 600px; /* Constrain width */
+    }
+}
+
+@media (max-width: 576px) {
+    .testimonials-header h2 {
+        font-size: 30px;
+    }
+    .testimonials-grid {
+        padding: 0 15px;
+    }
+    .testimonial-card {
+        padding: 20px;
+    }
+    .testimonials-actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .btn-read-more, .btn-write-review {
+        width: 80%; /* Make buttons full width */
+        margin: 0 auto;
+    }
+    .write-review-section {
+        margin: 30px auto;
+        padding: 25px;
+    }
+}
