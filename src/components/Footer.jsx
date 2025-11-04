@@ -1,6 +1,6 @@
 // src/components/Footer.jsx
 import React from 'react';
-import './Footer.css'; // 🚀 Import the dedicated CSS file
+import './footer.css'; // 🚀 Import the dedicated CSS file
 import logoImage from '../../images/logo.png'; // 💡 Using the same logo as Navbar
 
 const Footer = () => {
