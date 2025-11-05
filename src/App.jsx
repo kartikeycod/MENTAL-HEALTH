@@ -1,19 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
-  useNavigate,
 } from "react-router-dom";
 import "./App.css";
 
 // 🔹 SerenyDoctor Interface
 import Landing from "./serenyDoctor/Landing";
-
-// 🔹 Firebase Imports
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 
 // 🔹 Core UI Components
 import Navbar from "./components/Navbar";
@@ -40,8 +34,13 @@ import WeeklyTest from "./components/AIProctor/WeeklyTest";
 import ExercisePage from "./components/AIProctor/ExercisePage";
 
 // ---------------------------------------------------------
-// 🔹 Wrapper for AI Proctor setup (checks login & prefs)
+// 🔹 AI Proctor Setup Wrapper
 // ---------------------------------------------------------
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const AIProctorSetupWrapper = () => {
   const [uid, setUid] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -91,89 +90,12 @@ const AIProctorSetupWrapper = () => {
 // 🔹 Main Application
 // ---------------------------------------------------------
 function App() {
-  const [showWeeklyBanner, setShowWeeklyBanner] = useState(false);
-  const [checked, setChecked] = useState(false);
-  const auth = getAuth();
-  const db = getFirestore();
-
-  // 🔄 Check Weekly/Daily Test Banner Logic
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        console.log("🚫 No user logged in");
-        return;
-      }
-
-      console.log("✅ Logged in user:", user.uid);
-
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
-      if (!snap.exists()) {
-        console.log("⚠️ User doc not found");
-        return;
-      }
-
-      const nextTestDateStr = snap.data()?.schedule?.weeklyTest?.nextTestDate;
-      console.log("📅 Firestore nextTestDate:", nextTestDateStr);
-
-      if (!nextTestDateStr) {
-        const today = new Date();
-        await updateDoc(userRef, {
-          "schedule.weeklyTest.nextTestDate": today.toISOString(),
-        });
-        console.log("🆕 Set new nextTestDate:", today);
-        setShowWeeklyBanner(true);
-        setChecked(true);
-        return;
-      }
-
-      const nextTestDate = new Date(nextTestDateStr);
-      const today = new Date();
-
-      const sameDay =
-        today.getFullYear() === nextTestDate.getFullYear() &&
-        today.getMonth() === nextTestDate.getMonth() &&
-        today.getDate() === nextTestDate.getDate();
-
-      // ✅ For testing — always true if same calendar day OR forced below
-      if (sameDay || today >= nextTestDate || true) {
-        console.log("✅ Showing banner (daily test mode)");
-        setShowWeeklyBanner(true);
-      } else {
-        console.log("❌ Banner hidden (next test not due)");
-        setShowWeeklyBanner(false);
-      }
-
-      setChecked(true);
-    });
-
-    return () => unsub();
-  }, [auth, db]);
-
-  if (!checked) {
-    return (
-      <div style={{ padding: "60px", textAlign: "center" }}>
-        Checking schedule...
-      </div>
-    );
-  }
-
   return (
     <Router>
       <Navbar />
-
-      {/* 🧠 Global Daily/Weekly Test Banner */}
-      {showWeeklyBanner && (
-        <div className="weekly-banner">
-          <Link to="/weekly-test" className="banner-text">
-            🧩 It’s Your Daily Wellness Assessment! Click here to begin.
-          </Link>
-        </div>
-      )}
-
       <div style={{ marginTop: "80px" }}>
         <Routes>
-          {/* 🏠 Main Home Page */}
+          {/* 🏠 Home Page */}
           <Route
             path="/"
             element={
@@ -192,7 +114,7 @@ function App() {
             }
           />
 
-          {/* 🔐 Auth Routes */}
+          {/* 🔐 Auth & Form */}
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/form" element={<Form />} />
 
@@ -216,16 +138,16 @@ function App() {
             element={<AIProctorDashboard />}
           />
 
-          {/* 🧩 Daily/Weekly Test */}
-          <Route path="/weekly-test" element={<WeeklyTest />} />
-
           {/* 🧘 Exercise Page */}
           <Route path="/exercise" element={<ExercisePage />} />
 
-          {/* 🩺 Doctor Interface — SerenyDoctor Landing */}
+          {/* 🧩 Weekly Test (Manual Access Only) */}
+          <Route path="/weekly-test" element={<WeeklyTest />} />
+
+          {/* 🩺 Doctor Interface */}
           <Route path="/serenyDoctor" element={<Landing />} />
 
-          {/* 🧑‍⚕️ Doctor Dashboard (Future Implementation) */}
+          {/* 🧑‍⚕️ Doctor Dashboard Placeholder */}
           <Route
             path="/doctor-dashboard"
             element={
