@@ -1,0 +1,96 @@
+/* ✅ src/components/AIProctor/AIProctorDashboard.css */
+
+.ai-loading,
+.ai-finish {
+  padding: 100px;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  color: #2b2b2b;
+}
+
+/* 🔥 Matching the modern DailyTest style */
+.dailytest-container {
+  background: linear-gradient(135deg, #ffffff, #f4f8ff);
+  border-radius: 18px;
+  padding: 28px;
+  margin-top: 28px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  max-width: 920px;
+  margin-inline: auto;
+  font-family: "Poppins", sans-serif;
+  transition: 0.3s ease all;
+}
+
+.dt-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 8px 18px rgba(0, 74, 173, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dt-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 26px rgba(0, 74, 173, 0.16);
+}
+
+.checkbox input {
+  transform: scale(1.2);
+  margin-right: 6px;
+  accent-color: #004aad;
+}
+
+.ai-progress {
+  text-align: center;
+  margin-top: 24px;
+  color: #004aad;
+  font-weight: 500;
+}
+
+/* 🎯 Dialog Box */
+.ai-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.4s ease;
+  z-index: 1000;
+}
+
+.ai-dialog {
+  background: #fff;
+  padding: 28px 36px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.5s ease;
+  max-width: 380px;
+}
+
+.ai-dialog h3 {
+  color: #004aad;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+}
+
+.ai-dialog p {
+  color: #333;
+  font-size: 0.95rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

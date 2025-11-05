@@ -1,17 +1,16 @@
-// HeroSection.jsx
+// ✅ src/components/HeroSection.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
 import AnimatedSection from "./AnimatedSection";
-// 🚀 NEW: Importing the dedicated CSS file
-import './Herosection.css'; 
+import "./Herosection.css";
 import "../App.css";
 
 const HERO_SLIDES = [
   {
-    title: "Health Redefined: Give the test", // This title will be replaced in the UI
+    title: "Health Redefined: Give the test",
     subtitle:
-      "Experience a new era of proactive wellness powered by ethical AI, dedicated to your longevity and vitality.", // This subtitle will be replaced in the UI
+      "Experience a new era of proactive wellness powered by ethical AI, dedicated to your longevity and vitality.",
     buttonText: "Start Test",
     visualText: "Real-Time Bio-Data Stream",
   },
@@ -33,10 +32,11 @@ const HERO_SLIDES = [
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedPlan, setSelectedPlan] = useState(null);
   const navigate = useNavigate();
   const auth = getAuth();
 
-  // 🕒 Auto-change carousel every 8 seconds (LOGIC UNTOUCHED)
+  // 🕒 Auto-change carousel every 8 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
@@ -44,86 +44,122 @@ const HeroSection = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleDotClick = (index) => setCurrentSlide(index); // LOGIC UNTOUCHED
+  // 🧭 Check localStorage for selected plan (AI or Doctor)
+  useEffect(() => {
+    const plan = localStorage.getItem("selectedPlan");
+    if (plan) setSelectedPlan(plan);
+  }, []);
 
-  // ✅ Start Test Logic (KEPT INTACT)
   const handleStartTest = () => {
     const user = auth.currentUser || JSON.parse(localStorage.getItem("user"));
     const detailsFilled = localStorage.getItem("detailsFilled");
 
-    // 🧩 Step 1: Check login
     if (!user) {
       alert("⚠️ Please log in to start your assessment.");
       navigate("/auth");
       return;
     }
 
-    // 🧩 Step 2: Check form completion
     if (detailsFilled !== "true") {
       alert("📝 Please complete your basic details before taking the test.");
       navigate("/form");
       return;
     }
 
-    // 🧩 Step 3: Confirm and redirect
     const confirmProceed = window.confirm(
       "✅ Make sure you have entered your basic details correctly.\nClick OK to begin your Mental Health Assessment."
     );
     if (confirmProceed) navigate("/assessment");
   };
 
-  // 📌 Using the content from the first slide for the static visual, but overriding the text in the UI
-  const slide = HERO_SLIDES[currentSlide]; 
+  // 👉 Render the dynamic plan button
+  const renderPlanButton = () => {
+    if (selectedPlan === "ai") {
+      return (
+        <button
+          className="btn-secondary-new"
+          onClick={() => navigate("/ai-proctor")}
+        >
+          AI Proctoring
+        </button>
+      );
+    } else if (selectedPlan === "doctor") {
+      return (
+        <button
+          className="btn-tertiary-new"
+          onClick={() => navigate("/doctor-dashboard")}
+        >
+          Doctor Consultation
+        </button>
+      );
+    } else {
+      return (
+        <button
+          className="btn-secondary-new"
+          onClick={() => navigate("/plan")}
+        >
+          Choose a Plan
+        </button>
+      );
+    }
+  };
+
+  const handleDotClick = (index) => setCurrentSlide(index);
+  const slide = HERO_SLIDES[currentSlide];
 
   return (
-    // 💡 The 'hero-section' class is now the main entry point for the new styles
     <section id="hero" className="hero-section">
       <div className="hero-carousel-wrapper">
         {HERO_SLIDES.map((slide, index) => (
           <div
             key={index}
-            // 💡 We only show the first slide, and hide the others using CSS
-            className={`hero-slide ${index === 0 ? "static-active" : ""}`} 
-            // Removed inline transform style to prevent carousel effect
+            className={`hero-slide ${index === 0 ? "static-active" : ""}`}
           >
             <div className="hero-grid content-padding">
               <AnimatedSection delay={0.1}>
                 <div className="hero-main-content">
-                  {/* 🚀 NEW STATIC TEXT for the MindEase Design */}
-                  <h1>Your Partner in Mental<br/>Wellness<br/>Healing Starts with You</h1>
-                  <p className="hero-subtitle">MindEase offers personalized mental health support through assessments, therapy sessions, and AI-powered tools to help you thrive.</p>
+                  <h1>
+                    Your Partner in Mental<br />Wellness<br />Healing Starts with You
+                  </h1>
+                  <p className="hero-subtitle">
+                    MindEase offers personalized mental health support through
+                    assessments, therapy sessions, and AI-powered tools to help
+                    you thrive.
+                  </p>
 
                   <div className="hero-actions">
-                    {/* 1. Take Assessment Button (Primary) */}
+                    {/* 🧠 Main Buttons */}
                     <button
-                      className="btn-primary-new" // Using a new class for the blue button
-                      onClick={handleStartTest} // Logic is still tied here
+                      className="btn-primary-new"
+                      onClick={handleStartTest}
                     >
                       Take Assessment
                     </button>
 
-                    {/* 2. Talk to a Therapist Button (Secondary) */}
-                    <button className="btn-secondary-new"> {/* Using a new class for the white button */}
+                    <button
+                      className="btn-secondary-new"
+                      onClick={() => navigate("/serenyDoctor")}
+                    >
                       Talk to a Therapist
                     </button>
+
+                    {/* 💡 Dynamic Plan Button */}
+                    {renderPlanButton()}
                   </div>
                 </div>
               </AnimatedSection>
 
               <AnimatedSection delay={0.3}>
-                {/* 🚀 Visual Panel where we'll create the brain/heart icon */}
                 <div className="hero-visual-panel">
-                  {/* 💡 The container for the CSS-based design */}
                   <div className="visual-display-css">
-                    {/* The structure for the brain/heart icon is built in CSS */}
                     <div className="mind-ease-logo">
-                        <div className="logo-brain">
-                            <div className="brain-half left"></div>
-                            <div className="brain-half right"></div>
-                            <div className="brain-center"></div>
-                        </div>
-                        <div className="logo-heart"></div>
-                        <div className="logo-circle"></div>
+                      <div className="logo-brain">
+                        <div className="brain-half left"></div>
+                        <div className="brain-half right"></div>
+                        <div className="brain-center"></div>
+                      </div>
+                      <div className="logo-heart"></div>
+                      <div className="logo-circle"></div>
                     </div>
                   </div>
                 </div>
@@ -133,7 +169,6 @@ const HeroSection = () => {
         ))}
       </div>
 
-      {/* 🔘 Carousel Dots - HIDING THESE IN CSS */}
       <div className="carousel-dots-container">
         {HERO_SLIDES.map((_, index) => (
           <span
@@ -144,7 +179,6 @@ const HeroSection = () => {
         ))}
       </div>
 
-      {/* 🧾 Trust Bar - HIDING THIS IN CSS */}
       <AnimatedSection delay={0.5}>
         <div className="hero-trust-bar">
           <span>99.9% Data Security</span>

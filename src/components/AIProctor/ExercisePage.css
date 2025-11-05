@@ -1,0 +1,63 @@
+/* ✅ src/components/AIProctor/ExercisePage.css */
+.exercise-page {
+  text-align: center;
+  padding: 40px 20px;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(145deg, #f6f9ff, #eef3ff);
+  min-height: 100vh;
+}
+
+.exercise-title {
+  font-size: 2rem;
+  color: #004aad;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+.exercise-status {
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.video-container {
+  width: 520px;
+  max-width: 90vw;
+  height: 340px;
+  margin: 20px auto;
+  background: #e8f0ff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 26px rgba(0, 74, 173, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exercise-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.exercise-timer {
+  font-size: 1.1rem;
+  color: #004aad;
+  margin: 12px 0 20px;
+}
+
+.complete-btn {
+  background: linear-gradient(135deg, #007bff, #004aad);
+  color: white;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.complete-btn:hover {
+  transform: scale(1.04);
+  filter: brightness(1.04);
+}

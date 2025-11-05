@@ -1,0 +1,115 @@
+.analytics-section {
+  background: linear-gradient(135deg, #ffffff, #f7faff);
+  border-radius: 18px;
+  margin: 40px auto;
+  padding: 50px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  font-family: "Poppins", sans-serif;
+}
+
+.analytics-loading {
+  text-align: center;
+  font-weight: 600;
+  color: #004aad;
+}
+
+.analytics-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.analytics-text-content {
+  flex: 1 1 50%;
+}
+
+.section-label {
+  font-weight: 700;
+  color: #004aad;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  color: #222;
+  margin-bottom: 16px;
+}
+
+p {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 18px;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px 14px;
+  text-align: center;
+  box-shadow: 0 5px 18px rgba(0, 74, 173, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 74, 173, 0.18);
+}
+
+.stat-icon {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #004aad;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.analytics-visual-panel {
+  flex: 1 1 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: conic-gradient(#004aad var(--p), #e0e5ff 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute;
+  background: linear-gradient(135deg, #004aad, #007bff);
+  height: 100%;
+  border-radius: 50%;
+  transition: width 1s ease;
+}
+
+.progress-label {
+  margin-top: 24px;
+  font-weight: 600;
+  color: #333;
+}

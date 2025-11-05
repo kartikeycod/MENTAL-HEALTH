@@ -1,0 +1,107 @@
+/* ✅ src/components/AIProctor/DailyTest.css */
+
+.dailytest-container {
+  background: linear-gradient(135deg, #ffffff, #f4f8ff);
+  border-radius: 18px;
+  padding: 28px;
+  margin-top: 28px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  max-width: 920px;
+  margin-inline: auto;
+  font-family: "Poppins", sans-serif;
+}
+
+.dt-title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #004aad;
+  margin: 0 0 6px;
+  text-align: center;
+}
+
+.dt-subtitle {
+  text-align: center;
+  color: #54607a;
+  margin: 0 0 24px;
+}
+
+.dt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.dt-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 8px 18px rgba(0, 74, 173, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dt-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 26px rgba(0, 74, 173, 0.16);
+}
+
+.dt-label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #203047;
+}
+
+.dt-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dt-option {
+  border: 2px solid #e3e8f0;
+  background: #f9fbff;
+  color: #1f2a44;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.dt-option:hover {
+  border-color: #7aa7ff;
+  background: #eef5ff;
+}
+
+.dt-option.selected {
+  background: linear-gradient(135deg, #007bff, #004aad);
+  color: #fff;
+  border-color: transparent;
+}
+
+.dt-submit {
+  display: block;
+  margin: 22px auto 4px;
+  padding: 12px 26px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #007bff, #004aad);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.dt-submit:hover {
+  transform: scale(1.03);
+  filter: brightness(1.04);
+}
+
+.fade-in {
+  animation: fadeIn 0.7s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
