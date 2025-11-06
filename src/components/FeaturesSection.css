@@ -147,3 +147,7 @@
         padding: 20px;
     }
 }
+.feature-purple {
+  background: linear-gradient(135deg, #d9c9ff, #b388eb);
+  color: #fff;
+}

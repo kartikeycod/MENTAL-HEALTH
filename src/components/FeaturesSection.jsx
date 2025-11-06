@@ -59,6 +59,14 @@ const PILLARS = [
     colorClass: "feature-lightblue",
     link: "mood-chat",
   },
+  {
+    icon: "🎶",
+    title: "Soothing Music",
+    description:
+      "Play calming rain, ocean, or lofi sounds to relax and refocus your mind.",
+    colorClass: "feature-purple",
+    link: "soothing-music",
+  },
 ];
 
 const FeaturesSection = () => {
@@ -134,7 +142,7 @@ const FeaturesSection = () => {
       window.location.href = "https://mlsa-chatroom.vercel.app/";
     }
 
-    // 5️⃣ Mood Tracking → same chat platform (optional direct link)
+    // 5️⃣ Mood Tracking
     else if (pillar.link === "mood-chat") {
       if (!user) {
         alert("⚠️ Please log in to access mood tracking chat.");
@@ -142,6 +150,11 @@ const FeaturesSection = () => {
         return;
       }
       window.location.href = "https://mlsa-chatroom.vercel.app/";
+    }
+
+    // 6️⃣ Soothing Music
+    else if (pillar.link === "soothing-music") {
+      window.location.href = "https://mh-m-usic.vercel.app/";
     }
   };
 
