@@ -124,7 +124,7 @@ const HeroSection = () => {
                   <p className="hero-subtitle">
                     MindEase offers personalized mental health support through
                     assessments, therapy sessions, and AI-powered tools to help
-                    you thrive.
+                    you thrive.First enter detail and then start the test.
                   </p>
 
                   <div className="hero-actions">
