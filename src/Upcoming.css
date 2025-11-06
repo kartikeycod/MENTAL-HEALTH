@@ -1,0 +1,152 @@
+/* 🌌 GRAND ANNOUNCEMENT STYLING FOR SERENY BAND */
+.upcoming-grand {
+  position: relative;
+  background: radial-gradient(circle at 50% 20%, #0d111a 0%, #000 90%);
+  min-height: 100vh;
+  color: #e4e9ff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Soft moving background gradient glow */
+.upcoming-gradient {
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle at 40% 40%, rgba(0, 204, 255, 0.12), transparent 60%),
+              radial-gradient(circle at 70% 60%, rgba(255, 0, 150, 0.1), transparent 70%);
+  animation: floatGlow 10s ease-in-out infinite alternate;
+  filter: blur(90px);
+  z-index: 0;
+}
+
+@keyframes floatGlow {
+  from { transform: scale(1); opacity: 0.7; }
+  to { transform: scale(1.15); opacity: 1; }
+}
+
+/* Layout container */
+.upcoming-container {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  gap: 60px;
+}
+
+/* Left text block */
+.upcoming-text {
+  flex: 1 1 480px;
+  z-index: 3;
+  animation: fadeInUp 1.2s ease forwards;
+  text-align: left;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.grand-title {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #00eaff, #9f6fff, #ff4fe4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.grand-title span {
+  color: #fff;
+  text-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+}
+
+.grand-subtitle {
+  font-size: 1.2rem;
+  color: #bfc7e6;
+  line-height: 1.8;
+  margin-bottom: 28px;
+  max-width: 600px;
+}
+
+.coming-note {
+  font-size: 1rem;
+  color: #88aaff;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
+}
+
+/* Right band image */
+.upcoming-image {
+  flex: 1 1 420px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.band-img {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 30px;
+  box-shadow: 0 0 60px rgba(0, 255, 255, 0.2);
+  transition: transform 0.8s ease, filter 0.8s ease;
+}
+
+.band-img:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 30px rgba(0, 255, 255, 0.4));
+}
+
+/* Subtle glow behind image */
+.band-glow {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.25), transparent 70%);
+  filter: blur(70px);
+  z-index: -1;
+  animation: pulseGlow 4s infinite alternate ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  100% { transform: scale(1.1); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .upcoming-container {
+    flex-direction: column-reverse;
+    text-align: center;
+  }
+
+  .upcoming-text {
+    text-align: center;
+  }
+
+  .grand-title {
+    font-size: 2.2rem;
+  }
+
+  .grand-subtitle {
+    font-size: 1rem;
+  }
+
+  .band-img {
+    max-width: 300px;
+  }
+}

@@ -1,85 +1,128 @@
+/* 🌿 Sereny Analytics Section – Enhanced Styling */
 .analytics-section {
-  background: linear-gradient(135deg, #ffffff, #f7faff);
-  border-radius: 18px;
-  margin: 40px auto;
-  padding: 50px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  background: linear-gradient(145deg, #e8f3ff 0%, #fefefe 100%);
+  border-radius: 24px;
+  margin: 60px auto;
+  padding: 70px 50px;
+  box-shadow: 0 10px 35px rgba(0, 74, 173, 0.12);
   font-family: "Poppins", sans-serif;
+  max-width: 1200px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Soft floating gradient overlay */
+.analytics-section::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle at center, rgba(0, 122, 255, 0.15), transparent 70%);
+  filter: blur(60px);
+  z-index: 0;
 }
 
 .analytics-loading {
   text-align: center;
   font-weight: 600;
   color: #004aad;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
 }
 
+/* 🔢 Grid Layout */
 .analytics-grid {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 40px;
+  gap: 50px;
+  position: relative;
+  z-index: 2;
 }
 
+/* 🧾 Text Panel */
 .analytics-text-content {
   flex: 1 1 50%;
+  text-align: left;
 }
 
 .section-label {
   font-weight: 700;
   color: #004aad;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
 }
 
-h2 {
-  font-size: 1.8rem;
-  color: #222;
-  margin-bottom: 16px;
+.analytics-text-content h2 {
+  font-size: 2rem;
+  color: #1a1a1a;
+  margin-bottom: 14px;
+  background: linear-gradient(90deg, #004aad, #00a3c4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-p {
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 22px;
+.analytics-text-content p {
+  color: #444;
+  line-height: 1.7;
+  font-size: 1.05rem;
+  margin-bottom: 28px;
 }
 
+/* 🧮 Stats Grid */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 22px;
 }
 
 .stat-card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 18px 14px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 22px 18px;
   text-align: center;
   box-shadow: 0 5px 18px rgba(0, 74, 173, 0.08);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 74, 173, 0.18);
+  transform: translateY(-7px);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 12px 28px rgba(0, 74, 173, 0.18);
 }
 
 .stat-icon {
-  font-size: 28px;
-  margin-bottom: 6px;
+  font-size: 34px;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #004aad, #00b4d8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: iconPulse 2s infinite alternate ease-in-out;
+}
+
+@keyframes iconPulse {
+  from { transform: scale(1); opacity: 0.8; }
+  to { transform: scale(1.1); opacity: 1; }
 }
 
 .stat-value {
-  font-size: 1.9rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #004aad;
 }
 
 .stat-label {
   color: #666;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  margin-top: 6px;
 }
 
+/* 📊 Visual Ring */
 .analytics-visual-panel {
   flex: 1 1 45%;
   display: flex;
@@ -89,7 +132,7 @@ p {
 }
 
 .progress-ring {
-  width: 240px;
+  width: 300px;
   height: 240px;
   border-radius: 50%;
   background: conic-gradient(#004aad var(--p), #e0e5ff 0);
@@ -97,19 +140,39 @@ p {
   align-items: center;
   justify-content: center;
   position: relative;
-  overflow: hidden;
+  transition: all 0.8s ease;
+  box-shadow: inset 0 0 20px rgba(0, 74, 173, 0.15);
 }
 
-.progress-fill {
-  position: absolute;
-  background: linear-gradient(135deg, #004aad, #007bff);
-  height: 100%;
-  border-radius: 50%;
-  transition: width 1s ease;
+.progress-ring:hover {
+  transform: scale(1.05);
 }
 
 .progress-label {
   margin-top: 24px;
   font-weight: 600;
-  color: #333;
+  color: #222;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+/* 🖥️ Responsive */
+@media (max-width: 900px) {
+  .analytics-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .analytics-text-content {
+    text-align: center;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  .progress-ring {
+    width: 200px;
+    height: 200px;
+  }
 }

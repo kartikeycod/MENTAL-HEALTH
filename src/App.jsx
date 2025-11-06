@@ -32,7 +32,12 @@ import AIProctorSetup from "./components/AIProctor/AIProctorSetup";
 import AIProctorDashboard from "./components/AIProctor/AIProctorDashboard";
 import WeeklyTest from "./components/AIProctor/WeeklyTest";
 import ExercisePage from "./components/AIProctor/ExercisePage";
+import ToDo from "./components/ToDo";
+import Lesson from "./pages/Lesson";
+import PhysicalInteraction from "./pages/PhysicalInteraction";
+import LeisureActivity from "./pages/LeisureActivity";
 
+import Upcoming from "./Upcoming";
 // ---------------------------------------------------------
 // 🔹 AI Proctor Setup Wrapper
 // ---------------------------------------------------------
@@ -104,12 +109,14 @@ function App() {
                   <HeroSection />
                   <AssureSection />
                   <FeaturesSection />
+                   <ToDo />
                   <AnalyticsSection />
                   <AboutSection />
                   <TestimonialSection />
                   <InteractiveCTA />
                 </main>
                 <Footer />
+                <Upcoming/>
               </>
             }
           />
@@ -156,6 +163,9 @@ function App() {
               </div>
             }
           />
+          <Route path="/lesson" element={<Lesson />} />
+<Route path="/physical" element={<PhysicalInteraction />} />
+<Route path="/leisure" element={<LeisureActivity />} />
         </Routes>
       </div>
     </Router>

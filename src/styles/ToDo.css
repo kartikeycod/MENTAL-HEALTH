@@ -1,0 +1,102 @@
+/* src/styles/ToDo.css */
+
+.todo-section {
+  background: linear-gradient(135deg, #dfe9f3 0%, #ffffff 100%);
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.todo-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.todo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.todo-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  width: 280px;
+  cursor: pointer;
+}
+
+.todo-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.todo-card h3 {
+  color: #2b6777;
+  margin-bottom: 10px;
+}
+
+.todo-card p {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.todo-btn {
+  background-color: #52ab98;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.todo-btn:hover {
+  background-color: #407b69;
+}
+
+/* Shared style for lesson, physical, leisure */
+.lesson-page,
+.physical-page,
+.leisure-page {
+  padding: 40px;
+  max-width: 700px;
+  margin: auto;
+  text-align: center;
+}
+
+.lesson-text {
+  font-size: 1.2rem;
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+textarea {
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  resize: none;
+}
+
+button {
+  background-color: #2b6777;
+  color: #fff;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background-color: #52ab98;
+}
