@@ -3,6 +3,12 @@ import React from "react";
 import "./FitnessAPISection.css";
 
 const FitnessAPISection = () => {
+  // Function to handle button click
+  const handleConnectClick = () => {
+    // Opens your fitness-band site in a new tab
+    window.open("https://fitness-band-mh.vercel.app/", "_blank", "noopener,noreferrer");
+  };
+
   return (
     <section className="fitness-api-section">
       <div className="fitness-api-bg-glow"></div>
@@ -52,7 +58,10 @@ const FitnessAPISection = () => {
             Experience a futuristic blend of mind and body data — powered by
             real-time biometric connectivity.
           </p>
-          <button className="connect-btn">⚡ Connect Now</button>
+          {/* 🚀 On click, open the external link */}
+          <button className="connect-btn" onClick={handleConnectClick}>
+            ⚡ Connect Now
+          </button>
         </div>
       </div>
     </section>
