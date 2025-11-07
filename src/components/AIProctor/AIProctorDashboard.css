@@ -94,3 +94,10 @@
     transform: translateY(0);
   }
 }
+/* e.g., .stat-value or the element that holds the number */
+.stat-value {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
