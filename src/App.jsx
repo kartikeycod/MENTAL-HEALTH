@@ -45,6 +45,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import FitnessAPISection from "./components/FitnessAPISection";
 
 const AIProctorSetupWrapper = () => {
   const [uid, setUid] = useState(null);
@@ -109,6 +110,7 @@ function App() {
                   <HeroSection />
                   <AssureSection />
                   <FeaturesSection />
+                   <FitnessAPISection />
                    <ToDo />
                   <AnalyticsSection />
                   <AboutSection />
