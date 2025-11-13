@@ -18,6 +18,7 @@ import AboutSection from "./components/AboutSection";
 import TestimonialSection from "./components/TestimonialSection";
 import InteractiveCTA from "./components/InteractiveCTA";
 import Footer from "./components/Footer";
+import Yoga from "./components/yoga";
 import AssureSection from "./components/Assure";
 
 // 🔹 Flow Components
@@ -112,6 +113,7 @@ function App() {
                   <FeaturesSection />
                    <FitnessAPISection />
                    <ToDo />
+                  <Yoga />
                   <AnalyticsSection />
                   <AboutSection />
                   <TestimonialSection />

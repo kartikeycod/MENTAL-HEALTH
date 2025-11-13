@@ -340,3 +340,416 @@ body {
   font-size: 14px;
   color: #94a3b8;
 }
+
+/* Popup background */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Box */
+.popup-box {
+  width: 350px;
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.popup-input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.close-btn {
+  background: #64748b;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  border-radius: 8px;
+  border: none;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+/* Counsellor list */
+.counsellor-list {
+  margin-top: 20px;
+}
+
+.doctor-card {
+  display: flex;
+  gap: 15px;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.doctor-avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+}
+
+.rating {
+  color: #0284c7;
+  font-weight: 600;
+}
+
+/* popup */
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup-box {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  width: 330px;
+  text-align: center;
+}
+
+.popup-input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.close-btn {
+  width: 100%;
+  padding: 10px;
+  background: #64748b;
+  color: #fff;
+  border-radius: 8px;
+  border: none;
+  margin-top: 5px;
+}
+
+/* dashboard */
+.dashboard-section {
+  padding: 60px 20px;
+}
+
+.dashboard-container {
+  display: flex;
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.user-list {
+  width: 35%;
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.user-card {
+  padding: 12px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.user-card:hover {
+  background: #f1f5f9;
+}
+
+.active-user {
+  background: #e0f2fe !important;
+  border-color: #0284c7 !important;
+}
+
+.user-details {
+  width: 65%;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  max-height: 450px;
+  overflow-y: scroll;
+}
+
+.user-details pre {
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 12px;
+}
+
+/* ---------------- POPUP (doctor login/join) ---------------- */
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup-box {
+  width: 340px;
+  background: #fff;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(2, 6, 23, 0.12);
+  text-align: center;
+}
+
+.popup-input {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 8px 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.close-btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  background: #64748b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ---------------- DASHBOARD SECTION ---------------- */
+.dashboard-section {
+  padding: 40px 20px;
+  background: #f8fafc;
+}
+
+.dashboard-section h2 {
+  margin-bottom: 6px;
+}
+
+.dashboard-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+.user-list {
+  width: 35%;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.user-card {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #edf2f7;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.user-card:hover {
+  background: #f1f5f9;
+}
+
+.active-user {
+  background: #e0f2fe;
+  border-color: #0284c7;
+}
+
+.user-details {
+  width: 65%;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.user-details pre {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 10px;
+  white-space: pre-wrap;
+}
+
+/* counsellor list sizing (keeps small) */
+.counsellor-list {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.doctor-card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+.doctor-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.rating {
+  color: #0284c7;
+  font-weight: 600;
+}
+
+/* ---------------- POPUP (doctor login/join) ---------------- */
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup-box {
+  width: 340px;
+  background: #fff;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(2, 6, 23, 0.12);
+  text-align: center;
+}
+
+.popup-input {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 8px 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.close-btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  background: #64748b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ---------------- DASHBOARD SECTION ---------------- */
+.dashboard-section {
+  padding: 40px 20px;
+  background: #f8fafc;
+}
+
+.dashboard-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+.user-list {
+  width: 35%;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.user-card {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #edf2f7;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.user-card:hover {
+  background: #f1f5f9;
+}
+
+.active-user {
+  background: #e0f2fe;
+  border-color: #0284c7;
+}
+
+.user-details {
+  width: 65%;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+.user-details pre {
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 10px;
+  white-space: pre-wrap;
+}
+
+/* counsellor list sizing (keeps small) */
+.counsellor-list {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.doctor-card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+.doctor-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.rating {
+  color: #0284c7;
+  font-weight: 600;
+}

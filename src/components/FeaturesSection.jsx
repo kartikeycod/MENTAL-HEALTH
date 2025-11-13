@@ -23,7 +23,7 @@ const PILLARS = [
   },
   {
     icon: "💬",
-    title: "Doctor Chatbot",
+    title: "THE BUDDY-BHAI",
     description:
       "Instant access to a smart AI chatbot for quick advice and guidance.",
     colorClass: "feature-pink",
