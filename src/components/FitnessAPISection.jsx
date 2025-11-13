@@ -6,7 +6,7 @@ const FitnessAPISection = () => {
   // Function to handle button click
   const handleConnectClick = () => {
     // Opens your fitness-band site in a new tab
-    window.open("https://fitness-band-mh.vercel.app/", "_blank", "noopener,noreferrer");
+    window.open("https://sereny-fit-api.vercel.app", "_blank", "noopener,noreferrer");
   };
 
   return (
