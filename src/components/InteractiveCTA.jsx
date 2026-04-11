@@ -18,7 +18,7 @@ const InteractiveCTA = () => (
             <button
               className="btn-primary"
               onClick={() => {
-                window.location.href = "https://sereny-ai.vercel.app/";
+                window.location.href = "https://serenybuddy2.vercel.app/";
               }}
             >
               Check Symptoms
