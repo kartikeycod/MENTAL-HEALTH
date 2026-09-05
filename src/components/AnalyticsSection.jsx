@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AnimatedSection from "./AnimatedSection";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { subscribeToAuthChanges } from "../services/firebase/auth.service";
+import { fetchAnalyticsData } from "../services/firebase/aiProctor.service";
 import "./AnalyticsSection.css";
 
 const AnalyticsSection = () => {
@@ -18,47 +12,13 @@ const AnalyticsSection = () => {
     progressPct: 0,
   });
   const [loading, setLoading] = useState(true);
-  const auth = getAuth();
-  const db = getFirestore();
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (user) => {
+    const unsub = subscribeToAuthChanges(async (user) => {
       if (!user) return;
       try {
-        const userRef = doc(db, "users", user.uid);
-        const snap = await getDoc(userRef);
-        const userData = snap.data() || {};
-
-        // 🧩 Course Data
-        const streak = userData.course?.streak || 0;
-        const progressPct = userData.course?.progressPct || 0;
-
-        // 💪 Exercise Logs Count
-        const exerciseSnap = await getDocs(
-          collection(db, "users", user.uid, "exerciseLogs")
-        );
-        const exerciseSessions = exerciseSnap.size;
-
-        // 🧠 Weekly Test Avg
-        const weeklySnap = await getDocs(
-          collection(db, "users", user.uid, "weeklyTests")
-        );
-        const weeklyScores = weeklySnap.docs.map(
-          (d) => d.data()?.avgScore || 0
-        );
-        const avgScore =
-          weeklyScores.length > 0
-            ? (
-                weeklyScores.reduce((a, b) => a + b, 0) / weeklyScores.length
-              ).toFixed(2)
-            : 0;
-
-        setData({
-          streak,
-          exerciseSessions,
-          avgScore,
-          progressPct,
-        });
+        const analytics = await fetchAnalyticsData(user.uid);
+        setData(analytics);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching analytics:", err);
@@ -66,7 +26,7 @@ const AnalyticsSection = () => {
       }
     });
     return () => unsub();
-  }, [auth, db]);
+  }, []);
 
   if (loading) {
     return (

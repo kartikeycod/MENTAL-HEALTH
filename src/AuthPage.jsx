@@ -1,15 +1,8 @@
 import React, { useState } from "react";
-import { auth } from "./firebase";
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "./hooks/useAuth";
 import "./AuthPage.css";
+import { ROUTES } from "./constants/routes";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -19,39 +12,25 @@ export default function AuthPage() {
   const [isPrimaryActive, setIsPrimaryActive] = useState(false);
   const navigate = useNavigate();
 
+  const { login, register, googleSignIn } = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
 
     try {
       if (isLogin) {
-        // LOGIN
-        const userCred = await signInWithEmailAndPassword(auth, email, password);
-        await userCred.user.reload();
-
-        const refreshedUser = auth.currentUser;
+        const refreshedUser = await login(email, password);
         if (!refreshedUser.emailVerified) {
           setMessage("❌ Please verify your email before logging in.");
-          await auth.signOut();
         } else {
           setMessage("✅ Login successful! Welcome back.");
-
-          // ✅ Save user data for Navbar
-          const userData = {
-            name: refreshedUser.displayName || refreshedUser.email.split("@")[0],
-            email: refreshedUser.email,
-          };
-          localStorage.setItem("user", JSON.stringify(userData));
-
-          // ✅ Redirect
           setTimeout(() => {
-            navigate("/");
+            navigate(ROUTES.HOME);
           }, 1000);
         }
       } else {
-        // SIGN UP
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-        await sendEmailVerification(userCred.user);
+        await register(email, password);
         setMessage("📝 Registration complete. Check your inbox for verification.");
       }
     } catch (err) {
@@ -63,20 +42,16 @@ export default function AuthPage() {
   };
 
   const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
-      const userName = result.user.displayName || "User";
-      setMessage(`🌐 Signed in with Google. Hello, ${userName}!`);
-
-      // ✅ Store user name & redirect
-      const userData = { name: userName, email: result.user.email };
-      localStorage.setItem("user", JSON.stringify(userData));
-
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
-    } catch (err) {
+      const user = await googleSignIn();
+      if (user) {
+        const userName = user.displayName || "User";
+        setMessage(`🌐 Signed in with Google. Hello, ${userName}!`);
+        setTimeout(() => {
+          navigate(ROUTES.HOME);
+        }, 1000);
+      }
+    } catch {
       setMessage("🛑 Google sign-in was cancelled.");
     }
   };

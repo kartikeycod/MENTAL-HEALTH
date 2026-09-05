@@ -1,16 +1,9 @@
-// ✅ src/components/AIProctor/DailyTest.jsx
 import React, { useState } from "react";
+import {
+  DAILY_TEST_QUESTIONS,
+  DAILY_TEST_OPTIONS,
+} from "../../constants/dailyTest";
 import "./DailyTest.css";
-
-const QUESTIONS = [
-  "How was your overall mood today?",
-  "How well did you sleep last night?",
-  "How focused did you feel during the day?",
-  "How stressful was your day?",
-  "Did you practice any relaxation/mindfulness?",
-];
-
-const OPTIONS = ["Very Poor", "Poor", "Neutral", "Good", "Excellent"];
 
 const DailyTest = ({ onComplete }) => {
   const [answers, setAnswers] = useState({});
@@ -21,13 +14,12 @@ const DailyTest = ({ onComplete }) => {
   };
 
   const handleSubmit = async () => {
-    if (Object.keys(answers).length < QUESTIONS.length) {
+    if (Object.keys(answers).length < DAILY_TEST_QUESTIONS.length) {
       alert("Please answer all questions.");
       return;
     }
     setSubmitting(true);
     setTimeout(() => {
-      // store to DB if you want here
       alert("✅ Daily reflection submitted!");
       onComplete();
     }, 800);
@@ -41,13 +33,13 @@ const DailyTest = ({ onComplete }) => {
       </p>
 
       <div className="dt-grid">
-        {QUESTIONS.map((q, i) => (
+        {DAILY_TEST_QUESTIONS.map((q, i) => (
           <div key={i} className="dt-card">
             <label className="dt-label">
               {i + 1}. {q}
             </label>
             <div className="dt-options">
-              {OPTIONS.map((opt) => (
+              {DAILY_TEST_OPTIONS.map((opt) => (
                 <button
                   key={opt}
                   className={`dt-option ${answers[i] === opt ? "selected" : ""}`}

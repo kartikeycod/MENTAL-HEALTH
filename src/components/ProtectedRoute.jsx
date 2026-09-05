@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { subscribeToAuthChanges } from "../services/firebase/auth.service";
+import { getDetailsFilled, getStoredUser } from "../utils/storage/storageHelpers";
+import { ROUTES } from "../constants/routes";
 
 const ProtectedRoute = ({ children }) => {
   const [authChecked, setAuthChecked] = useState(false);
@@ -8,9 +9,7 @@ const ProtectedRoute = ({ children }) => {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const auth = getAuth();
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = subscribeToAuthChanges((user) => {
       setLoggedIn(!!user);
       setAuthChecked(true);
     });
@@ -20,22 +19,22 @@ const ProtectedRoute = ({ children }) => {
 
   useEffect(() => {
     if (authChecked) {
-      const detailsFilled = localStorage.getItem("detailsFilled") === "true";
-      const userData = localStorage.getItem("user");
+      const detailsFilled = getDetailsFilled();
+      const userData = getStoredUser();
 
       if (!loggedIn) {
         alert("Please log in first to continue.");
-        window.location.href = "/auth";
+        window.location.href = ROUTES.AUTH;
       } else if (!detailsFilled || !userData) {
         alert("Please fill out the details form first.");
-        window.location.href = "/form";
+        window.location.href = ROUTES.FORM;
       } else {
         setReady(true);
       }
     }
   }, [authChecked, loggedIn]);
 
-  if (!ready) return null; // wait until checks complete
+  if (!ready) return null;
 
   return children;
 };

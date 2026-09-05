@@ -1,116 +1,15 @@
-// ✅ src/components/AIProctor/AIProctorSetup.jsx
-import React, { useEffect, useState } from "react";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  addDoc,
-  collection,
-  serverTimestamp,
-  getDoc,
-} from "firebase/firestore";
+import React from "react";
+import { useAIProctorSetup } from "../../hooks/useAIProctorSetup";
 import "../AIProctoring.css";
-import useMealGenerator from "./useMealGenerator";
 
 const AIProctorSetup = ({ uid, onSetupComplete }) => {
-  const db = getFirestore();
-  const [prefs, setPrefs] = useState({ location: "", dietType: "balanced" });
-  const [schedule, setSchedule] = useState({
-    exerciseTime: "",
-    mealTimes: ["", "", ""],
-    weeklyTestDay: "Sunday",
-  });
-  const [packType] = useState("ai"); // 🧠 Default AI pack since this setup is AI mode
-  const generateMealPlan = useMealGenerator();
-
-  // 🗺️ Auto-detect location
-  useEffect(() => {
-    if (prefs.location) return;
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        async (pos) => {
-          const { latitude, longitude } = pos.coords;
-          try {
-            const res = await fetch(
-              `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
-            );
-            const data = await res.json();
-            const city =
-              data.address.city ||
-              data.address.town ||
-              data.address.village ||
-              "";
-            const country = data.address.country || "";
-            if (city || country)
-              setPrefs((p) => ({
-                ...p,
-                location: `${city ? city + ", " : ""}${country}`,
-              }));
-          } catch {}
-        },
-        () => {},
-        { enableHighAccuracy: true, timeout: 10000 }
-      );
-    }
-  }, [prefs.location]);
-
-  // 💾 Save setup to Firestore
-  const handleSave = async (e) => {
-    e.preventDefault();
-    if (!uid) return;
-
-    const userRef = doc(db, "users", uid);
-
-    // Generate 28-day meal plan
-    const mealPlan = generateMealPlan(prefs.location, prefs.dietType);
-    const mealPlanData = {
-      packType, // 👈 added packType (AI or Doctor)
-      weekNumber: 1,
-      meals: mealPlan.map((d, i) => ({
-        day: `Day ${i + 1}`,
-        breakfast: d[0],
-        lunch: d[1],
-        dinner: d[2],
-        completed: false,
-      })),
-      generatedAt: serverTimestamp(),
-    };
-
-    // Store user preferences + schedule + initial course tracking
-    await setDoc(
-      userRef,
-      {
-        prefs,
-        packType,
-        schedule: {
-          exercise: { time: schedule.exerciseTime },
-          meals: schedule.mealTimes,
-          weeklyTest: {
-            day: schedule.weeklyTestDay,
-            nextTestDate: new Date().toISOString(),
-          },
-        },
-        course: {
-          currentDay: 1,
-          progressPct: 0,
-          streak: 0,
-          status: "active",
-          startedAt: serverTimestamp(),
-        },
-        updatedAt: serverTimestamp(),
-      },
-      { merge: true }
-    );
-
-    // Add meal plan to subcollection
-    await addDoc(collection(db, "users", uid, "mealPlan"), mealPlanData);
-
-    localStorage.setItem("courseStatus", "active");
-    localStorage.setItem("packType", packType);
-
-    alert("✅ AI Pack setup complete!");
-    onSetupComplete();
-  };
+  const {
+    prefs,
+    setPrefs,
+    schedule,
+    setSchedule,
+    handleSave,
+  } = useAIProctorSetup(uid, onSetupComplete);
 
   return (
     <div className="ai-container">

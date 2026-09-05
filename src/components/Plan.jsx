@@ -1,74 +1,43 @@
-// ✅ src/components/Plan.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  serverTimestamp,
-  getDoc,
-} from "firebase/firestore";
+import { subscribeToAuthChanges } from "../services/firebase/auth.service";
+import { saveUserPlanSelection } from "../services/firebase/user.service";
+import { setSelectedPlan, setCourseStatus } from "../utils/storage/storageHelpers";
+import { ROUTES } from "../constants/routes";
 import "./Plan.css";
 
 const Plan = () => {
   const [loading, setLoading] = useState(true);
   const [uid, setUid] = useState(null);
   const navigate = useNavigate();
-  const auth = getAuth();
-  const db = getFirestore();
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (user) => {
+    const unsub = subscribeToAuthChanges((user) => {
       if (!user) {
         alert("Please log in to choose a plan.");
-        navigate("/auth");
+        navigate(ROUTES.AUTH);
         return;
       }
       setUid(user.uid);
       setLoading(false);
     });
     return () => unsub();
-  }, [auth, navigate]);
+  }, [navigate]);
 
   const handleSelect = async (plan) => {
     if (!uid) return;
     try {
-      const userRef = doc(db, "users", uid);
-      const snap = await getDoc(userRef);
+      await saveUserPlanSelection(uid, plan);
 
-      const start = new Date();
-      const end = new Date(start);
-      end.setDate(end.getDate() + 28);
-
-      const payload = {
-        plan,
-        course: {
-          startDate: start.toISOString(),
-          endDate: end.toISOString(),
-          currentDay: 1,
-          progressPct: 0,
-          testMode: "daily", // 🧠 now daily test instead of weekly
-          status: "active",
-          updatedAt: serverTimestamp(),
-        },
-        schedule:
-          snap.exists() && snap.data().schedule
-            ? snap.data().schedule
-            : { exercise: null, meals: null, testMode: "daily" },
-        lastLoginAt: serverTimestamp(),
-      };
-
-      await setDoc(userRef, payload, { merge: true });
-      localStorage.setItem("selectedPlan", plan);
-      localStorage.setItem("courseStatus", "active");
+      setSelectedPlan(plan);
+      setCourseStatus("active");
 
       if (plan === "ai") {
         alert("🧠 AI Counselling selected. Let’s set up your AI Proctor module.");
-        navigate("/ai-proctor"); // ✅ new route
+        navigate(ROUTES.AI_PROCTOR);
       } else {
         alert("👩‍⚕️ Doctor Counselling selected.");
-        navigate("/doctor-dashboard");
+        navigate(ROUTES.DOCTOR_DASHBOARD);
       }
     } catch (err) {
       console.error(err);

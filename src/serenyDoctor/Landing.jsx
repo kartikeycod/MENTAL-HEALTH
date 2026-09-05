@@ -1,181 +1,36 @@
-// src/serenyDoctor/Landing.jsx
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./Landing.css";
-import { db } from "../firebase"; // make sure this path is correct in your project
-import {
-  collection,
-  addDoc,
-  getDocs,
-  query,
-  where,
-  serverTimestamp,
-} from "firebase/firestore";
+import { useDoctorLanding } from "../hooks/useDoctorLanding";
 
 const Landing = () => {
-  // location + counsellors
-  const [location, setLocation] = useState(null);
-  const [counsellors, setCounsellors] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  // popups for doctor auth
-  const [showLogin, setShowLogin] = useState(false);
-  const [showJoin, setShowJoin] = useState(false);
-
-  // login/register fields
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPass, setLoginPass] = useState("");
-  const [dName, setDName] = useState("");
-  const [dEmail, setDEmail] = useState("");
-  const [dPass, setDPass] = useState("");
-  const [dSpec, setDSpec] = useState("");
-
-  // doctor session + dashboard users
-  const [doctorLoggedIn, setDoctorLoggedIn] = useState(false);
-  const [allUsers, setAllUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
-
-  // -------------------------
-  // FIND COUNSELLORS (Overpass)
-  // -------------------------
-  const handleFindCounsellors = () => {
-    if (!navigator.geolocation) {
-      alert("Geolocation not supported by your browser.");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
-
-        setLocation({ lat, lon });
-        setLoading(true);
-
-        const queryStr = `
-          [out:json];
-          (
-            node["healthcare"="psychotherapist"](around:3000,${lat},${lon});
-            node["healthcare"="psychology"](around:3000,${lat},${lon});
-            node["amenity"="clinic"](around:3000,${lat},${lon});
-          );
-          out body;
-        `;
-
-        try {
-          const url =
-            "https://overpass-api.de/api/interpreter?data=" +
-            encodeURIComponent(queryStr);
-
-          const res = await fetch(url);
-          const data = await res.json();
-
-          const mapped = (data.elements || []).map((e) => ({
-            id: e.id,
-            name: (e.tags && e.tags.name) || "Certified Counsellor",
-            specialization:
-              (e.tags && (e.tags.specialty || e.tags.healthcare)) ||
-              "Mental Health",
-            avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${e.id}`,
-            rating: (4 + Math.random()).toFixed(1),
-          }));
-
-          setCounsellors(mapped);
-        } catch (err) {
-          console.error(err);
-          alert("Unable to fetch nearby counsellors.");
-        }
-
-        setLoading(false);
-      },
-      () => {
-        alert("Please allow location access to find nearby counsellors.");
-      }
-    );
-  };
-
-  // -------------------------
-  // DOCTOR REGISTER (Firestore)
-  // -------------------------
-  const handleDoctorRegister = async () => {
-    if (!dName || !dEmail || !dPass || !dSpec) {
-      alert("Please fill all fields.");
-      return;
-    }
-    try {
-      await addDoc(collection(db, "doctors"), {
-        name: dName,
-        email: dEmail,
-        password: dPass,
-        specialization: dSpec,
-        createdAt: serverTimestamp(),
-      });
-      alert("Registration successful — doctor saved to Firestore.");
-      setShowJoin(false);
-      setDName("");
-      setDEmail("");
-      setDPass("");
-      setDSpec("");
-    } catch (err) {
-      console.error("Register error:", err);
-      alert("Error registering doctor. Check console.");
-    }
-  };
-
-  // -------------------------
-  // DOCTOR LOGIN (hardcoded admin OR firestore)
-  // -------------------------
-  const handleDoctorLogin = async () => {
-    // admin fallback
-    if (loginEmail === "a@serenium.com" && loginPass === "1234") {
-      setDoctorLoggedIn(true);
-      setShowLogin(false);
-      await loadUsers();
-      return;
-    }
-
-    try {
-      const q = query(
-        collection(db, "doctors"),
-        where("email", "==", loginEmail),
-        where("password", "==", loginPass)
-      );
-      const snap = await getDocs(q);
-      if (!snap.empty) {
-        setDoctorLoggedIn(true);
-        setShowLogin(false);
-        await loadUsers();
-      } else {
-        alert("Invalid credentials. Make sure the doctor exists in Firestore 'doctors' collection and the password matches.");
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-      alert("Login failed. Check console for details.");
-    }
-  };
-
-  // -------------------------
-  // LOAD ALL USERS FOR DASHBOARD
-  // -------------------------
-  const loadUsers = async () => {
-    try {
-      const snap = await getDocs(collection(db, "users"));
-      const arr = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-      setAllUsers(arr);
-    } catch (err) {
-      console.error("Load users error:", err);
-      alert("Unable to load users.");
-    }
-  };
-
-  // auto refresh user list while logged in
-  useEffect(() => {
-    let t;
-    if (doctorLoggedIn) {
-      loadUsers();
-      t = setInterval(loadUsers, 60 * 1000);
-    }
-    return () => clearInterval(t);
-  }, [doctorLoggedIn]);
+  const {
+    location,
+    counsellors,
+    loading,
+    showLogin,
+    setShowLogin,
+    showJoin,
+    setShowJoin,
+    loginEmail,
+    setLoginEmail,
+    loginPass,
+    setLoginPass,
+    dName,
+    setDName,
+    dEmail,
+    setDEmail,
+    dPass,
+    setDPass,
+    dSpec,
+    setDSpec,
+    doctorLoggedIn,
+    allUsers,
+    selectedUser,
+    setSelectedUser,
+    handleFindCounsellors,
+    handleDoctorRegister,
+    handleDoctorLogin,
+  } = useDoctorLanding();
 
   return (
     <div className="serenity-landing">
@@ -250,7 +105,7 @@ const Landing = () => {
         </div>
       )}
 
-      {/* DOCTOR JOIN POPUP (no image/file input) */}
+      {/* DOCTOR JOIN POPUP */}
       {showJoin && (
         <div className="popup">
           <div className="popup-box">
@@ -292,7 +147,7 @@ const Landing = () => {
         </div>
       )}
 
-      {/* DOCTOR DASHBOARD (appears after login) */}
+      {/* DOCTOR DASHBOARD */}
       {doctorLoggedIn && (
         <section className="dashboard-section">
           <h2>Doctor Dashboard</h2>
@@ -337,7 +192,7 @@ const Landing = () => {
         </section>
       )}
 
-      {/* Find section (original kept) */}
+      {/* Find section */}
       <section id="find" className="find-section">
         <h2>Find Nearby Hospitals or Therapists</h2>
         <p>Allow location access to see hospitals near you.</p>
@@ -375,7 +230,7 @@ const Landing = () => {
         )}
       </section>
 
-      {/* Plans — kept exactly as older */}
+      {/* Plans */}
       <section id="plans" className="plans-section">
         <h2>1-on-1 Counselling at the Lowest Cost Ever</h2>
         <p>Choose a plan that fits your healing journey.</p>
@@ -404,7 +259,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Testimonials — unchanged */}
+      {/* Testimonials */}
       <section id="testimonials" className="testimonials">
         <h2>What Our Patients Say</h2>
         <div className="testimonial-grid">
@@ -434,7 +289,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Footer — unchanged */}
+      {/* Footer */}
       <footer id="contact" className="footer">
         <div className="footer-content">
           <div>

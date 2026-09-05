@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { subscribeToAuthChanges } from "../../services/firebase/auth.service";
+import { getUserDoc } from "../../services/firebase/user.service";
+import { ROUTES } from "../../constants/routes";
 import AIProctorSetup from "./AIProctorSetup";
 import AIProctorDashboard from "./AIProctorDashboard";
 import "../../App.css";
@@ -11,30 +12,26 @@ const AIProctor = () => {
   const [hasSetup, setHasSetup] = useState(false);
   const [uid, setUid] = useState(null);
   const [userData, setUserData] = useState({});
-  const auth = getAuth();
-  const db = getFirestore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (user) => {
+    const unsub = subscribeToAuthChanges(async (user) => {
       if (!user) {
         alert("Please log in first.");
-        navigate("/auth");
+        navigate(ROUTES.AUTH);
         return;
       }
 
       setUid(user.uid);
-      const ref = doc(db, "users", user.uid);
-      const snap = await getDoc(ref);
-      if (snap.exists()) {
-        const data = snap.data();
+      const data = await getUserDoc(user.uid);
+      if (data) {
         setUserData(data);
         setHasSetup(!!data.schedule?.exercise?.time);
       }
       setLoading(false);
     });
     return () => unsub();
-  }, [auth, db, navigate]);
+  }, [navigate]);
 
   if (loading) {
     return (

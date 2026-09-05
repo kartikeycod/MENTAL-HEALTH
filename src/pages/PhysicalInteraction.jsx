@@ -1,24 +1,8 @@
-// src/pages/PhysicalInteraction.jsx
-import React, { useState } from "react";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import React from "react";
+import { usePhysicalInteraction } from "../hooks/usePhysicalInteraction";
 
 const PhysicalInteraction = () => {
-  const [summary, setSummary] = useState("");
-  const [saved, setSaved] = useState(false);
-  const db = getFirestore();
-  const auth = getAuth();
-
-  const handleSave = async () => {
-    const user = auth.currentUser;
-    if (!user) return alert("Login required");
-
-    await setDoc(doc(db, "userTasks", `${user.uid}_physical`), {
-      summary,
-      date: new Date().toISOString(),
-    });
-    setSaved(true);
-  };
+  const { summary, setSummary, saved, handleSave } = usePhysicalInteraction();
 
   return (
     <div className="physical-page">

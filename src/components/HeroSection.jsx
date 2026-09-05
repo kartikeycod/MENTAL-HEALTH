@@ -1,42 +1,22 @@
-// ✅ src/components/HeroSection.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth } from "firebase/auth";
+import { getCurrentAuthUser } from "../services/firebase/auth.service";
 import AnimatedSection from "./AnimatedSection";
+import { HERO_SLIDES, HERO_TRUST_BAR_ITEMS } from "../constants/heroSlides";
+import {
+  getStoredUser,
+  getDetailsFilled,
+  getSelectedPlan,
+} from "../utils/storage/storageHelpers";
+import { ROUTES } from "../constants/routes";
 import "./Herosection.css";
 import "../App.css";
 
-const HERO_SLIDES = [
-  {
-    title: "Health Redefined: Give the test",
-    subtitle:
-      "Experience a new era of proactive wellness powered by ethical AI, dedicated to your longevity and vitality.",
-    buttonText: "Start Test",
-    visualText: "Real-Time Bio-Data Stream",
-  },
-  {
-    title: "Personalized Wellness, Delivered Instantly.",
-    subtitle:
-      "Access your full genomic profile and receive weekly, predictive health updates directly on your dashboard.",
-    buttonText: "Activate Patient Portal",
-    visualText: "Genomic Profile Loading",
-  },
-  {
-    title: "Global Experts, Local Access, Zero Friction.",
-    subtitle:
-      "Connect with world-class specialists for consultation and second opinions from the comfort of your home.",
-    buttonText: "Find a Provider Today",
-    visualText: "Global Consult Network",
-  },
-];
-
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [selectedPlan, setSelectedPlanState] = useState(null);
   const navigate = useNavigate();
-  const auth = getAuth();
 
-  // 🕒 Auto-change carousel every 8 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
@@ -44,41 +24,39 @@ const HeroSection = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // 🧭 Check localStorage for selected plan (AI or Doctor)
   useEffect(() => {
-    const plan = localStorage.getItem("selectedPlan");
-    if (plan) setSelectedPlan(plan);
+    const plan = getSelectedPlan();
+    if (plan) setSelectedPlanState(plan);
   }, []);
 
   const handleStartTest = () => {
-    const user = auth.currentUser || JSON.parse(localStorage.getItem("user"));
-    const detailsFilled = localStorage.getItem("detailsFilled");
+    const user = getCurrentAuthUser() || getStoredUser();
+    const detailsFilled = getDetailsFilled();
 
     if (!user) {
       alert("⚠️ Please log in to start your assessment.");
-      navigate("/auth");
+      navigate(ROUTES.AUTH);
       return;
     }
 
-    if (detailsFilled !== "true") {
+    if (!detailsFilled) {
       alert("📝 Please complete your basic details before taking the test.");
-      navigate("/form");
+      navigate(ROUTES.FORM);
       return;
     }
 
     const confirmProceed = window.confirm(
       "✅ Make sure you have entered your basic details correctly.\nClick OK to begin your Mental Health Assessment."
     );
-    if (confirmProceed) navigate("/assessment");
+    if (confirmProceed) navigate(ROUTES.ASSESSMENT);
   };
 
-  // 👉 Render the dynamic plan button
   const renderPlanButton = () => {
     if (selectedPlan === "ai") {
       return (
         <button
           className="btn-secondary-new"
-          onClick={() => navigate("/ai-proctor")}
+          onClick={() => navigate(ROUTES.AI_PROCTOR)}
         >
           AI Proctoring
         </button>
@@ -87,7 +65,7 @@ const HeroSection = () => {
       return (
         <button
           className="btn-tertiary-new"
-          onClick={() => navigate("/doctor-dashboard")}
+          onClick={() => navigate(ROUTES.DOCTOR_DASHBOARD)}
         >
           Doctor Consultation
         </button>
@@ -96,7 +74,7 @@ const HeroSection = () => {
       return (
         <button
           className="btn-secondary-new"
-          onClick={() => navigate("/plan")}
+          onClick={() => navigate(ROUTES.PLAN)}
         >
           Choose a Plan
         </button>
@@ -105,7 +83,6 @@ const HeroSection = () => {
   };
 
   const handleDotClick = (index) => setCurrentSlide(index);
-  const slide = HERO_SLIDES[currentSlide];
 
   return (
     <section id="hero" className="hero-section">
@@ -126,10 +103,8 @@ const HeroSection = () => {
                     assessments, therapy sessions, and AI-powered tools to help
                     you thrive. First enter the detail and then take the test.
                   </p>
-                  
 
                   <div className="hero-actions">
-                    {/* 🧠 Main Buttons */}
                     <button
                       className="btn-primary-new"
                       onClick={handleStartTest}
@@ -139,12 +114,11 @@ const HeroSection = () => {
 
                     <button
                       className="btn-secondary-new"
-                      onClick={() => navigate("/serenyDoctor")}
+                      onClick={() => navigate(ROUTES.SERENY_DOCTOR)}
                     >
                       Talk to a Therapist
                     </button>
 
-                    {/* 💡 Dynamic Plan Button */}
                     {renderPlanButton()}
                   </div>
                 </div>
@@ -182,10 +156,9 @@ const HeroSection = () => {
 
       <AnimatedSection delay={0.5}>
         <div className="hero-trust-bar">
-          <span>99.9% Data Security</span>
-          <span>WCAG AA Accessible</span>
-          <span>ISO 27001 Certified</span>
-          <span>24/7 AI Support</span>
+          {HERO_TRUST_BAR_ITEMS.map((item, i) => (
+            <span key={i}>{item}</span>
+          ))}
         </div>
       </AnimatedSection>
     </section>

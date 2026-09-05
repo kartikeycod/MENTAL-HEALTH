@@ -1,96 +1,30 @@
 import React from "react";
 import "./FeaturesSection.css";
 import { useNavigate } from "react-router-dom";
-import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-
-const PILLARS = [
-  {
-    icon: "🧠",
-    title: "Weekly Assessment",
-    description:
-      "Understand your mental state with comprehensive, AI-powered evaluations.",
-    colorClass: "feature-blue",
-    link: "weekly-test",
-  },
-  {
-    icon: "🧘‍♀️",
-    title: "Yoga Monitoring",
-    description:
-      "Track your progress in yoga and meditation for enhanced mindfulness.",
-    colorClass: "feature-green",
-    link: "exercise",
-  },
-  {
-    icon: "💬",
-    title: "THE BUDDY-BHAI",
-    description:
-      "Instant access to a smart AI chatbot for quick advice and guidance.",
-    colorClass: "feature-pink",
-    link: "doctor-chatbot",
-  },
-  {
-    icon: "📈",
-    title: "Progress Dashboard",
-    description:
-      "Visualize your mental wellness journey with interactive dashboards.",
-    colorClass: "feature-yellow",
-  },
-  {
-    icon: "📝",
-    title: "Personalized Prescription",
-    description:
-      "Receive tailored recommendations for self-care and growth.",
-    colorClass: "feature-lightgreen",
-  },
-  {
-    icon: "💖",
-    title: "Peer-Anonymus",
-    description:
-      "Chat safely and anonymously with peers to share and grow together.",
-    colorClass: "feature-softpink",
-    link: "peer-anonymous",
-  },
-  {
-    icon: "😊",
-    title: "Mood Tracking",
-    description:
-      "Log and analyze your moods over time to identify patterns and triggers.",
-    colorClass: "feature-lightblue",
-    link: "mood-chat",
-  },
-  {
-    icon: "🎶",
-    title: "Soothing Music",
-    description:
-      "Play calming rain, ocean, or lofi sounds to relax and refocus your mind.",
-    colorClass: "feature-purple",
-    link: "soothing-music",
-  },
-];
+import { getCurrentAuthUser } from "../services/firebase/auth.service";
+import { getUserDoc } from "../services/firebase/user.service";
+import { PILLARS } from "../constants/pillars";
+import { ROUTES } from "../constants/routes";
 
 const FeaturesSection = () => {
   const navigate = useNavigate();
-  const auth = getAuth();
-  const db = getFirestore();
 
   const handleFeatureClick = async (pillar) => {
-    const user = auth.currentUser;
+    const user = getCurrentAuthUser();
 
     // 1️⃣ Weekly Assessment
     if (pillar.link === "weekly-test") {
       if (!user) {
         alert("⚠️ Please log in to access the weekly test.");
-        navigate("/auth");
+        navigate(ROUTES.AUTH);
         return;
       }
 
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
-      if (!snap.exists()) return;
+      const userDoc = await getUserDoc(user.uid);
+      if (!userDoc) return;
 
       const nextTestDateStr =
-        snap.data()?.schedule?.weeklyTest?.nextTestDate || null;
+        userDoc.schedule?.weeklyTest?.nextTestDate || null;
 
       if (!nextTestDateStr) {
         alert("Weekly test schedule not found.");
@@ -109,7 +43,7 @@ const FeaturesSection = () => {
         const confirmStart = window.confirm(
           "🧩 Your Weekly Test is available!\nWould you like to start it now?"
         );
-        if (confirmStart) navigate("/weekly-test");
+        if (confirmStart) navigate(ROUTES.WEEKLY_TEST);
       } else {
         alert(
           `⏳ Your next weekly test will unlock on ${nextTestDate.toLocaleDateString()}.`
@@ -121,10 +55,10 @@ const FeaturesSection = () => {
     else if (pillar.link === "exercise") {
       if (!user) {
         alert("⚠️ Please log in to continue your yoga monitoring.");
-        navigate("/auth");
+        navigate(ROUTES.AUTH);
         return;
       }
-      navigate("/exercise");
+      navigate(ROUTES.EXERCISE);
     }
 
     // 3️⃣ Doctor Chatbot
@@ -136,7 +70,7 @@ const FeaturesSection = () => {
     else if (pillar.link === "peer-anonymous") {
       if (!user) {
         alert("⚠️ Please log in to access the Peer-Anonymus chat.");
-        navigate("/auth");
+        navigate(ROUTES.AUTH);
         return;
       }
       window.location.href = "https://mlsa-chatroom.vercel.app/";
@@ -146,7 +80,7 @@ const FeaturesSection = () => {
     else if (pillar.link === "mood-chat") {
       if (!user) {
         alert("⚠️ Please log in to access mood tracking chat.");
-        navigate("/auth");
+        navigate(ROUTES.AUTH);
         return;
       }
       window.location.href = "https://mlsa-chatroom.vercel.app/";
