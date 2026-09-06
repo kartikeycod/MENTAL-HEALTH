@@ -52,3 +52,6 @@ firebase-debug.log
 
 # Other common ignore patterns
 /coveragex
+
+__pycache__/
+*.pyc
