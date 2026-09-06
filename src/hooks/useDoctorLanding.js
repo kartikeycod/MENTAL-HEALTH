@@ -1,11 +1,9 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { fetchNearbyCounsellors } from "../services/api/counsellors.api";
-import {
-  registerDoctor,
-  loginDoctor,
-  fetchAllPatients,
-} from "../services/firebase/doctor.service";
+import { fetchAllPatients } from "../services/firebase/doctor.service";
 
+// This hook powers the legacy serenyDoctor/Landing page.
+// Doctor login/register is now handled by dedicated pages at /doctor/login and /doctor/signup.
 export const useDoctorLanding = () => {
   const [location, setLocation] = useState(null);
   const [counsellors, setCounsellors] = useState([]);
@@ -21,7 +19,7 @@ export const useDoctorLanding = () => {
   const [dPass, setDPass] = useState("");
   const [dSpec, setDSpec] = useState("");
 
-  const [doctorLoggedIn, setDoctorLoggedIn] = useState(false);
+  const [doctorLoggedIn] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
@@ -54,64 +52,9 @@ export const useDoctorLanding = () => {
     );
   };
 
-  const handleDoctorRegister = async () => {
-    if (!dName || !dEmail || !dPass || !dSpec) {
-      alert("Please fill all fields.");
-      return;
-    }
-    try {
-      await registerDoctor({
-        name: dName,
-        email: dEmail,
-        password: dPass,
-        specialization: dSpec,
-      });
-      alert("Registration successful — doctor saved to Firestore.");
-      setShowJoin(false);
-      setDName("");
-      setDEmail("");
-      setDPass("");
-      setDSpec("");
-    } catch (err) {
-      console.error("Register error:", err);
-      alert("Error registering doctor. Check console.");
-    }
-  };
-
-  const loadUsers = useCallback(async () => {
-    try {
-      const arr = await fetchAllPatients();
-      setAllUsers(arr);
-    } catch (err) {
-      console.error("Load users error:", err);
-      alert("Unable to load users.");
-    }
-  }, []);
-
-  const handleDoctorLogin = async () => {
-    try {
-      const res = await loginDoctor(loginEmail, loginPass);
-      if (res) {
-        setDoctorLoggedIn(true);
-        setShowLogin(false);
-        await loadUsers();
-      } else {
-        alert("Invalid credentials. Make sure the doctor exists in Firestore 'doctors' collection and the password matches.");
-      }
-    } catch (err) {
-      console.error("Login error:", err);
-      alert("Login failed. Check console for details.");
-    }
-  };
-
-  useEffect(() => {
-    let t;
-    if (doctorLoggedIn) {
-      loadUsers();
-      t = setInterval(loadUsers, 60 * 1000);
-    }
-    return () => clearInterval(t);
-  }, [doctorLoggedIn, loadUsers]);
+  // These are now stubs — the actual flows are in /doctor/signup and /doctor/login
+  const handleDoctorRegister = () => {};
+  const handleDoctorLogin = () => {};
 
   return {
     location,

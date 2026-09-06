@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Landing.css";
 import { useDoctorLanding } from "../hooks/useDoctorLanding";
+import { ROUTES } from "../constants/routes";
 
 const Landing = () => {
   const {
