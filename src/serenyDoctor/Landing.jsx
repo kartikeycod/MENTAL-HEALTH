@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import "./Landing.css";
 import { useDoctorLanding } from "../hooks/useDoctorLanding";
 import { ROUTES } from "../constants/routes";
@@ -25,6 +24,8 @@ const Landing = () => {
     setDPass,
     dSpec,
     setDSpec,
+    authError,
+    authLoading,
     doctorLoggedIn,
     allUsers,
     selectedUser,
@@ -36,23 +37,6 @@ const Landing = () => {
 
   return (
     <div className="serenity-landing">
-      {/* Header */}
-      <header className="header">
-        <div className="header-inner">
-          <h1 className="logo">Serenity Doctor</h1>
-          <nav className="nav">
-            <a href="#home">Home</a>
-            <a href="#plans">Plans</a>
-            <a href="#find">Find Doctor</a>
-            <a href="#testimonials">Testimonials</a>
-            <a href="#contact">Contact</a>
-          </nav>
-          <button className="login-btn" onClick={() => setShowLogin(true)}>
-            Login as Doctor
-          </button>
-        </div>
-      </header>
-
       {/* Hero */}
       <section id="home" className="hero">
         <div className="hero-content">
@@ -67,8 +51,8 @@ const Landing = () => {
             <button className="primary-btn" onClick={() => setShowJoin(true)}>
               Join as Doctor
             </button>
-            <button className="secondary-btn" onClick={handleFindCounsellors}>
-              Find Nearby Counsellors
+            <button className="secondary-btn" onClick={() => (window.location.href = ROUTES.THERAPISTS)}>
+              Find Therapists Marketplace
             </button>
           </div>
         </div>
@@ -83,6 +67,7 @@ const Landing = () => {
         <div className="popup">
           <div className="popup-box">
             <h2>Doctor Login</h2>
+            {authError && <div style={{ color: "#ef4444", marginBottom: "12px", fontSize: "0.9rem" }}>{authError}</div>}
             <input
               type="email"
               className="popup-input"
@@ -97,10 +82,10 @@ const Landing = () => {
               value={loginPass}
               onChange={(e) => setLoginPass(e.target.value)}
             />
-            <button className="primary-btn" onClick={handleDoctorLogin}>
-              Login
+            <button className="primary-btn" onClick={handleDoctorLogin} disabled={authLoading}>
+              {authLoading ? "Logging in..." : "Login"}
             </button>
-            <button className="close-btn" onClick={() => setShowLogin(false)}>
+            <button className="close-btn" onClick={() => setShowLogin(false)} disabled={authLoading}>
               Close
             </button>
           </div>
@@ -112,6 +97,7 @@ const Landing = () => {
         <div className="popup">
           <div className="popup-box">
             <h2>Join as Doctor</h2>
+            {authError && <div style={{ color: "#ef4444", marginBottom: "12px", fontSize: "0.9rem" }}>{authError}</div>}
 
             <input
               className="popup-input"
@@ -128,21 +114,21 @@ const Landing = () => {
             <input
               type="password"
               className="popup-input"
-              placeholder="Password"
+              placeholder="Password (min 6 characters)"
               value={dPass}
               onChange={(e) => setDPass(e.target.value)}
             />
             <input
               className="popup-input"
-              placeholder="Specialization"
+              placeholder="Specialization (e.g. Clinical Psychologist)"
               value={dSpec}
               onChange={(e) => setDSpec(e.target.value)}
             />
 
-            <button className="primary-btn" onClick={handleDoctorRegister}>
-              Register
+            <button className="primary-btn" onClick={handleDoctorRegister} disabled={authLoading}>
+              {authLoading ? "Registering in Firebase..." : "Register"}
             </button>
-            <button className="close-btn" onClick={() => setShowJoin(false)}>
+            <button className="close-btn" onClick={() => setShowJoin(false)} disabled={authLoading}>
               Close
             </button>
           </div>
@@ -194,43 +180,7 @@ const Landing = () => {
         </section>
       )}
 
-      {/* Find section */}
-      <section id="find" className="find-section">
-        <h2>Find Nearby Hospitals or Therapists</h2>
-        <p>Allow location access to see hospitals near you.</p>
 
-        <button onClick={handleFindCounsellors} className="find-btn">
-          Locate Counsellors
-        </button>
-
-        {location && (
-          <div className="map-placeholder">
-            <p>
-              Showing counsellors near: <br />
-              <strong>
-                Lat: {location.lat.toFixed(3)}, Lon: {location.lon.toFixed(3)}
-              </strong>
-            </p>
-
-            <div className="counsellor-list">
-              {loading && <p>Loading...</p>}
-              {!loading &&
-                counsellors.map((c) => (
-                  <div className="doctor-card" key={c.id}>
-                    <img className="doctor-avatar" src={c.avatar} alt="" />
-                    <div>
-                      <h4>{c.name}</h4>
-                      <p>{c.specialization}</p>
-                      <span className="rating">⭐ {c.rating}</span>
-                    </div>
-                  </div>
-                ))}
-            </div>
-
-            <div className="map-box">[ Map / API Placeholder ]</div>
-          </div>
-        )}
-      </section>
 
       {/* Plans */}
       <section id="plans" className="plans-section">

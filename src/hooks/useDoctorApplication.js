@@ -6,7 +6,6 @@ import { createDoctorPlan } from "../services/firebase/doctorPlanService";
 import { validateDoctorForm } from "../utils/validation/doctorValidation";
 
 export const useDoctorApplication = () => {
-  const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);

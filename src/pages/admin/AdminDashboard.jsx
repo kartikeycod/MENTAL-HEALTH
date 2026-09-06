@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useAdmin } from "../../hooks/useAdmin";
 import { useAuth } from "../../hooks/useAuth";
-import { getDoctorById } from "../../services/firebase/doctorService";
 import { STATUS_CONFIG, APPLICATION_STATUS } from "../../config/statuses";
 import "./AdminDashboard.css";
 

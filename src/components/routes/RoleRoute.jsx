@@ -3,8 +3,8 @@ import { Navigate, Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { ROUTES } from "../../constants/routes";
 
-const RoleRoute = ({ requiredRole, children }) => {
-  const { user, profile, loading, isDoctor } = useAuth();
+const RoleRoute = ({ requiredRole, allowedRoles, children }) => {
+  const { user, profile, loading, isDoctor, isAdmin } = useAuth();
 
   if (loading) {
     return (
@@ -18,7 +18,19 @@ const RoleRoute = ({ requiredRole, children }) => {
     return <Navigate to={ROUTES.AUTH} replace />;
   }
 
-  const hasAccess = requiredRole === "doctor" ? isDoctor : profile?.roles?.[requiredRole];
+  const targetRoles = allowedRoles
+    ? Array.isArray(allowedRoles)
+      ? allowedRoles
+      : [allowedRoles]
+    : [requiredRole];
+
+  const hasAccess = targetRoles.some((role) => {
+    if (role === "admin") return isAdmin;
+    if (role === "doctor") return isDoctor;
+    return !!profile?.roles?.[role];
+  });
+
+  const displayRole = targetRoles.join(" / ");
 
   if (!hasAccess) {
     return (
@@ -26,11 +38,11 @@ const RoleRoute = ({ requiredRole, children }) => {
         <div style={{ fontSize: "3rem", marginBottom: "16px" }}>🔒</div>
         <h2 style={{ fontSize: "1.8rem", fontWeight: "700", color: "#0f172a", marginBottom: "12px" }}>Access Restricted</h2>
         <p style={{ color: "#64748b", fontSize: "1rem", lineHeight: "1.6", marginBottom: "24px" }}>
-          You do not have active {requiredRole} access permissions on this account.
-          {requiredRole === "doctor" && " If you are a therapist or clinical specialist, you can apply for doctor verification."}
+          You do not have active {displayRole} access permissions on this account.
+          {targetRoles.includes("doctor") && " If you are a therapist or clinical specialist, you can apply for doctor verification."}
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
-          {requiredRole === "doctor" ? (
+          {targetRoles.includes("doctor") ? (
             <Link to={ROUTES.DOCTOR_SIGNUP} style={{ padding: "10px 20px", background: "#4f46e5", color: "#fff", borderRadius: "8px", textDecoration: "none", fontWeight: "600" }}>
               Apply as Doctor
             </Link>

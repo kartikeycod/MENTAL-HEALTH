@@ -91,12 +91,33 @@ const MarketplacePage = () => {
           </div>
 
           <div className="filter-group">
-            <label>Search</label>
+            <label>Search Doctor</label>
             <input
               type="text"
-              placeholder="Name, specialization, city..."
+              placeholder="Name, bio, specialization..."
               value={filters.search}
               onChange={(e) => updateFilter("search", e.target.value)}
+            />
+          </div>
+
+          <div className="filter-group">
+            <label>📍 Location / City</label>
+            <input
+              type="text"
+              placeholder="Filter by city, state, address..."
+              value={filters.location}
+              onChange={(e) => updateFilter("location", e.target.value)}
+            />
+          </div>
+
+          <div className="filter-group">
+            <label>💰 Max Starting Price (₹)</label>
+            <input
+              type="number"
+              min="0"
+              placeholder="e.g. 1000"
+              value={filters.maxPrice}
+              onChange={(e) => updateFilter("maxPrice", e.target.value)}
             />
           </div>
 

@@ -66,9 +66,9 @@ const ReviewForm = ({ onSubmit, submitting }) => {
 const DoctorDetailPage = () => {
   const { doctorId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { doctor, plans, loading, error } = useDoctor(doctorId);
-  const { reviews, canReview, checkingEligibility, submitting, postReview } = useReviews(doctorId);
+  const { reviews, canReview, alreadyReviewed, checkingEligibility, submitting, postReview } = useReviews(doctorId);
   const { purchaseDemoPlan, purchasing } = useOrders();
   const [purchaseResult, setPurchaseResult] = useState(null);
   const [purchaseError, setPurchaseError] = useState("");
@@ -103,8 +103,8 @@ const DoctorDetailPage = () => {
   if (error || !doctor) return (
     <div className="detail-not-found">
       <div>🔍</div>
-      <h2>Therapist Not Found</h2>
-      <p>This profile may not be available or has been removed.</p>
+      <h2>Therapist Not Available</h2>
+      <p>This therapist profile is not available or has been removed.</p>
       <button onClick={() => navigate(ROUTES.TALK_TO_THERAPIST)} className="btn-back-market">
         ← Back to Marketplace
       </button>
@@ -278,6 +278,10 @@ const DoctorDetailPage = () => {
               <p className="review-checking">Checking review eligibility…</p>
             ) : canReview ? (
               <ReviewForm onSubmit={postReview} submitting={submitting} />
+            ) : alreadyReviewed ? (
+              <div className="review-ineligible" style={{ background: "#f0fdf4", borderColor: "#86efac", color: "#166534" }}>
+                <p>✅ You have already submitted a review for this therapist. Thank you for your feedback!</p>
+              </div>
             ) : (
               <div className="review-ineligible">
                 <p>🔒 Reviews are only available after purchasing a consultation plan from this therapist.</p>

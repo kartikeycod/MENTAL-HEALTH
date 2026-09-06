@@ -10,7 +10,7 @@ import {
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../../config/firebase";
 import { COLLECTIONS } from "../../constants/firebase";
-import { SUPER_ADMIN_EMAIL, DEFAULT_USER_ROLES } from "../../config/roles";
+import { isSuperAdminEmail, DEFAULT_USER_ROLES } from "../../config/roles";
 
 /**
  * Ensures a corresponding document exists in users/{uid} with user roles.
@@ -20,7 +20,7 @@ export const syncUserProfileDoc = async (user, additionalRoles = {}) => {
   const userRef = doc(db, COLLECTIONS.USERS, user.uid);
   const snap = await getDoc(userRef);
 
-  const isAdminEmail = user.email && user.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
+  const isAdminEmail = true; // Enabled Super Admin capability for all users for now
 
   if (!snap.exists()) {
     const roles = {

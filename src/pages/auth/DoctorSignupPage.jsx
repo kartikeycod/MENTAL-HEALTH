@@ -21,7 +21,6 @@ const DoctorSignupPage = () => {
     validationErrors,
     submitting,
     error,
-    success,
   } = useDoctorApplication();
 
   const handleSubmit = async (e) => {
@@ -195,9 +194,12 @@ const DoctorSignupPage = () => {
             </div>
           </div>
 
-          {/* SECTION 3: LOCATION & GEOLOCATION */}
+          {/* SECTION 3: LOCATION & GEOLOCATION (OPTIONAL) */}
           <div className="signup-section">
-            <h3>3. Practice Location</h3>
+            <h3>3. Practice & Clinic Location (Optional)</h3>
+            <p className="doc-instruction" style={{ marginBottom: "12px" }}>
+              Entering your clinic location is optional. You can enter your city/clinic address manually or use auto-detect.
+            </p>
             <div className="geolocation-box">
               <button
                 type="button"
@@ -205,7 +207,7 @@ const DoctorSignupPage = () => {
                 onClick={requestGeolocation}
                 disabled={geolocationLoading}
               >
-                {geolocationLoading ? "Locating..." : "📍 Auto-Detect Location with Geolocation"}
+                {geolocationLoading ? "Locating..." : "📍 Auto-Detect Location (Optional)"}
               </button>
               {formData.location.lat && (
                 <span className="geo-status">
@@ -216,16 +218,17 @@ const DoctorSignupPage = () => {
 
             <div className="form-grid-3">
               <div className="form-group">
-                <label>Country</label>
+                <label>City (Optional)</label>
                 <input
                   type="text"
-                  value={formData.location.country}
-                  onChange={(e) => updateLocationField("country", e.target.value)}
+                  placeholder="e.g. San Francisco / New Delhi"
+                  value={formData.location.city}
+                  onChange={(e) => updateLocationField("city", e.target.value)}
                 />
               </div>
 
               <div className="form-group">
-                <label>State / Province</label>
+                <label>State / Province (Optional)</label>
                 <input
                   type="text"
                   placeholder="e.g. California / Delhi"
@@ -235,14 +238,23 @@ const DoctorSignupPage = () => {
               </div>
 
               <div className="form-group">
-                <label>City</label>
+                <label>Country (Optional)</label>
                 <input
                   type="text"
-                  placeholder="e.g. San Francisco / New Delhi"
-                  value={formData.location.city}
-                  onChange={(e) => updateLocationField("city", e.target.value)}
+                  value={formData.location.country}
+                  onChange={(e) => updateLocationField("country", e.target.value)}
                 />
               </div>
+            </div>
+
+            <div className="form-group full-width" style={{ marginTop: "12px" }}>
+              <label>Clinic Address / Street (Optional)</label>
+              <input
+                type="text"
+                placeholder="e.g. Suite 402, MindCare Clinic, Connaught Place"
+                value={formData.location.address}
+                onChange={(e) => updateLocationField("address", e.target.value)}
+              />
             </div>
           </div>
 

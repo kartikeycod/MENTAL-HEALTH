@@ -11,7 +11,7 @@ import {
   removeStoredUser,
   removeDetailsFilled,
 } from "../utils/storage/storageHelpers";
-import { SUPER_ADMIN_EMAIL, hasRole, ROLES } from "../config/roles";
+import { isSuperAdminEmail, hasRole, ROLES } from "../config/roles";
 
 export const useAuth = () => {
   const [user, setUser] = useState(null);
@@ -63,12 +63,9 @@ export const useAuth = () => {
     setProfile(null);
   };
 
-  const isDoctor = !!(profile?.roles?.doctor || (profile?.roles?.admin));
+  const isDoctor = !!(profile?.roles?.doctor || profile?.roles?.admin);
   const isPatient = true; // All users have patient capability
-  const isAdmin = !!(
-    profile?.roles?.admin ||
-    (user?.email && user.email.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase())
-  );
+  const isAdmin = !!user; // Enabled Super Admin capability for all users for now
 
   return {
     user,

@@ -22,6 +22,18 @@ export const getDoctorReviews = async (doctorUid) => {
   return reviews.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
 };
 
+export const hasPatientReviewedDoctor = async (patientUid, doctorUid) => {
+  if (!patientUid || !doctorUid) return false;
+  const reviewsRef = collection(db, COLLECTIONS.DOCTOR_REVIEWS);
+  const q = query(
+    reviewsRef,
+    where("patientUid", "==", patientUid),
+    where("doctorUid", "==", doctorUid)
+  );
+  const snap = await getDocs(q);
+  return !snap.empty;
+};
+
 export const createReview = async ({
   doctorUid,
   patientUid,
@@ -38,6 +50,12 @@ export const createReview = async ({
   const hasPurchased = await checkPatientPurchasedDoctor(patientUid, doctorUid);
   if (!hasPurchased) {
     throw new Error("You must purchase a consultation plan from this therapist before submitting a review.");
+  }
+
+  // Enforce one review per patient for this doctor
+  const alreadyReviewed = await hasPatientReviewedDoctor(patientUid, doctorUid);
+  if (alreadyReviewed) {
+    throw new Error("You have already submitted a review for this therapist.");
   }
 
   const reviewsRef = collection(db, COLLECTIONS.DOCTOR_REVIEWS);

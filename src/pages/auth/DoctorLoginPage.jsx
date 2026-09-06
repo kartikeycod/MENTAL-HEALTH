@@ -5,6 +5,7 @@ import { getDoctorById } from "../../services/firebase/doctorService";
 import { getApplicationByDoctorUid } from "../../services/firebase/doctorApplicationService";
 import { ROUTES } from "../../constants/routes";
 import { APPLICATION_STATUS } from "../../config/statuses";
+import { isSuperAdminEmail } from "../../config/roles";
 import "./DoctorAuth.css";
 
 const DoctorLoginPage = () => {
@@ -13,7 +14,7 @@ const DoctorLoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const { login, isDoctor, isAdmin } = useAuth();
+  const { login } = useAuth();
 
   const handleDoctorLogin = async (e) => {
     e.preventDefault();
@@ -26,7 +27,7 @@ const DoctorLoginPage = () => {
 
     setLoading(true);
     try {
-      const { user } = await login(email, password);
+      const { user, profile } = await login(email, password);
 
       if (!user) {
         setErrorMessage("Invalid credentials.");
@@ -38,11 +39,18 @@ const DoctorLoginPage = () => {
       const doctorProfile = await getDoctorById(user.uid);
       const doctorApp = await getApplicationByDoctorUid(user.uid);
 
-      if (!doctorProfile && !doctorApp && !user.email.includes("admin")) {
+      const isAdminUser = profile?.roles?.admin || isSuperAdminEmail(user.email);
+
+      if (!doctorProfile && !doctorApp && !isAdminUser) {
         setErrorMessage(
           "No doctor practice record found for this account. If you wish to join Serenium as a therapist, please submit an application."
         );
         setLoading(false);
+        return;
+      }
+
+      if (isAdminUser && !doctorProfile && !doctorApp) {
+        navigate(ROUTES.ADMIN);
         return;
       }
 
@@ -64,8 +72,10 @@ const DoctorLoginPage = () => {
       }
     } catch (err) {
       console.error("Doctor Login Error:", err);
-      if (err.code === "auth/user-not-found" || err.code === "auth/invalid-credential" || err.code === "auth/wrong-password") {
+      if (err.code === "auth/user-not-found" || err.code === "auth/invalid-credential" || err.code === "auth/wrong-password" || err.code === "auth/invalid-email") {
         setErrorMessage("Invalid email or password. Please check your credentials.");
+      } else if (err.code === "auth/too-many-requests") {
+        setErrorMessage("Access temporarily blocked due to too many failed login attempts. Please try again later.");
       } else {
         setErrorMessage(err.message || "Failed to log in as doctor. Please try again.");
       }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { getDoctorReviews, createReview } from "../services/firebase/reviewService";
+import { getDoctorReviews, createReview, hasPatientReviewedDoctor } from "../services/firebase/reviewService";
 import { checkPatientPurchasedDoctor } from "../services/firebase/orderService";
 import { useAuth } from "./useAuth";
 import { validateReviewForm } from "../utils/validation/doctorValidation";
@@ -9,6 +9,7 @@ export const useReviews = (doctorUid) => {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [canReview, setCanReview] = useState(false);
+  const [alreadyReviewed, setAlreadyReviewed] = useState(false);
   const [checkingEligibility, setCheckingEligibility] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -28,12 +29,15 @@ export const useReviews = (doctorUid) => {
   const checkEligibility = useCallback(async () => {
     if (!user?.uid || !doctorUid) {
       setCanReview(false);
+      setAlreadyReviewed(false);
       return;
     }
     setCheckingEligibility(true);
     try {
       const eligible = await checkPatientPurchasedDoctor(user.uid, doctorUid);
-      setCanReview(eligible);
+      const reviewed = await hasPatientReviewedDoctor(user.uid, doctorUid);
+      setAlreadyReviewed(reviewed);
+      setCanReview(eligible && !reviewed);
     } catch (err) {
       console.error("Error checking review eligibility:", err);
       setCanReview(false);
@@ -83,6 +87,7 @@ export const useReviews = (doctorUid) => {
     reviews,
     loading,
     canReview,
+    alreadyReviewed,
     checkingEligibility,
     submitting,
     postReview,

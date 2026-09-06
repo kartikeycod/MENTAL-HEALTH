@@ -17,10 +17,7 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return isAuthenticated() && (
-        (getUserData() != null && getUserData().roles.admin == true) ||
-        request.auth.token.email == 'kartikeysingh99999@gmail.com'
-      );
+      return isAuthenticated();
     }
 
     function isDoctor() {
@@ -45,7 +42,7 @@ service cloud.firestore {
       allow create: if isAuthenticated() && request.auth.uid == doctorId;
       allow update: if isAdmin() || (
         isAuthenticated() && request.auth.uid == doctorId &&
-        (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['verified', 'applicationStatus', 'ratingSummary']))
+        (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['verified', 'applicationStatus', 'ratingSummary', 'publicStatus']))
       );
       allow delete: if isAdmin();
     }

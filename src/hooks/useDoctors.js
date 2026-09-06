@@ -8,6 +8,8 @@ export const useDoctors = (initialFilters = {}) => {
   const [filters, setFilters] = useState({
     search: "",
     specialization: "all",
+    location: "",
+    maxPrice: "",
     minExperience: 0,
     minRating: 0,
     sortBy: "rating",
@@ -40,6 +42,8 @@ export const useDoctors = (initialFilters = {}) => {
     setFilters({
       search: "",
       specialization: "all",
+      location: "",
+      maxPrice: "",
       minExperience: 0,
       minRating: 0,
       sortBy: "rating",

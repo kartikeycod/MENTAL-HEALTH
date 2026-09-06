@@ -5,7 +5,6 @@ import {
   query,
   where,
   serverTimestamp,
-  orderBy,
 } from "firebase/firestore";
 import { db } from "../../config/firebase";
 import { COLLECTIONS } from "../../constants/firebase";

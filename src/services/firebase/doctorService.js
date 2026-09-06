@@ -16,16 +16,10 @@ import { APPLICATION_STATUS, PUBLIC_STATUS } from "../../config/statuses";
 export const getVerifiedDoctors = async (filters = {}) => {
   try {
     const doctorsRef = collection(db, COLLECTIONS.DOCTOR_PROFILES);
-    const q = query(
-      doctorsRef,
-      where("applicationStatus", "==", APPLICATION_STATUS.APPROVED),
-      where("publicStatus", "==", PUBLIC_STATUS.ACTIVE)
-    );
-
-    const snap = await getDocs(q);
+    const snap = await getDocs(doctorsRef);
     let doctors = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 
-    // Apply client-side filtering (specialization, experience, search, rating)
+    // Filter by Specialization
     if (filters.specialization && filters.specialization !== "all") {
       doctors = doctors.filter(
         (doc) =>
@@ -34,23 +28,49 @@ export const getVerifiedDoctors = async (filters = {}) => {
       );
     }
 
+    // Filter by Location (City, State, Country, Address)
+    if (filters.location) {
+      const locTerm = filters.location.toLowerCase();
+      doctors = doctors.filter((doc) => {
+        const city = doc.location?.city || "";
+        const state = doc.location?.state || "";
+        const country = doc.location?.country || "";
+        const address = doc.location?.address || "";
+        const fullLoc = `${city} ${state} ${country} ${address}`.toLowerCase();
+        return fullLoc.includes(locTerm);
+      });
+    }
+
+    // Filter by Search (Name, Specialization, Bio, Location)
     if (filters.search) {
       const term = filters.search.toLowerCase();
       doctors = doctors.filter(
         (doc) =>
           (doc.fullName && doc.fullName.toLowerCase().includes(term)) ||
+          (doc.displayName && doc.displayName.toLowerCase().includes(term)) ||
           (doc.specialization && doc.specialization.toLowerCase().includes(term)) ||
           (doc.bio && doc.bio.toLowerCase().includes(term)) ||
-          (doc.location?.city && doc.location.city.toLowerCase().includes(term))
+          (doc.location?.city && doc.location.city.toLowerCase().includes(term)) ||
+          (doc.location?.state && doc.location.state.toLowerCase().includes(term)) ||
+          (doc.location?.address && doc.location.address.toLowerCase().includes(term))
       );
     }
 
+    // Filter by Max Price
+    if (filters.maxPrice && Number(filters.maxPrice) > 0) {
+      doctors = doctors.filter(
+        (doc) => Number(doc.startingPrice || 0) <= Number(filters.maxPrice)
+      );
+    }
+
+    // Filter by Min Experience
     if (filters.minExperience) {
       doctors = doctors.filter(
         (doc) => Number(doc.experienceYears || 0) >= Number(filters.minExperience)
       );
     }
 
+    // Filter by Min Rating
     if (filters.minRating) {
       doctors = doctors.filter(
         (doc) => Number(doc.ratingSummary?.averageRating || 0) >= Number(filters.minRating)
@@ -73,7 +93,7 @@ export const getVerifiedDoctors = async (filters = {}) => {
 
     return doctors;
   } catch (err) {
-    console.error("Error fetching verified doctors:", err);
+    console.error("Error fetching doctors marketplace:", err);
     return [];
   }
 };
