@@ -1,10 +1,9 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { fetchNearbyCounsellors } from "../services/api/counsellors.api";
-import {
-  registerDoctor,
-  loginDoctor,
-  fetchAllPatients,
-} from "../services/firebase/doctor.service";
+import { registerWithEmail, loginWithEmail } from "../services/firebase/auth.service";
+import { createDoctorProfile } from "../services/firebase/doctorService";
+import { submitDoctorApplication } from "../services/firebase/doctorApplicationService";
+import { createDoctorPlan } from "../services/firebase/doctorPlanService";
 
 export const useDoctorLanding = () => {
   const [location, setLocation] = useState(null);
@@ -21,8 +20,11 @@ export const useDoctorLanding = () => {
   const [dPass, setDPass] = useState("");
   const [dSpec, setDSpec] = useState("");
 
+  const [authError, setAuthError] = useState("");
+  const [authLoading, setAuthLoading] = useState(false);
+
   const [doctorLoggedIn, setDoctorLoggedIn] = useState(false);
-  const [allUsers, setAllUsers] = useState([]);
+  const [allUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
 
   const handleFindCounsellors = () => {
@@ -55,63 +57,91 @@ export const useDoctorLanding = () => {
   };
 
   const handleDoctorRegister = async () => {
+    setAuthError("");
     if (!dName || !dEmail || !dPass || !dSpec) {
-      alert("Please fill all fields.");
+      setAuthError("Please fill in all fields (Name, Email, Password, Specialization).");
       return;
     }
+    if (dPass.length < 6) {
+      setAuthError("Password must be at least 6 characters long.");
+      return;
+    }
+
+    setAuthLoading(true);
     try {
-      await registerDoctor({
-        name: dName,
-        email: dEmail,
-        password: dPass,
+      // 1. Create Firebase Auth user
+      const { user } = await registerWithEmail(dEmail, dPass, { doctor: true });
+      if (!user) throw new Error("Failed to create user account.");
+
+      const doctorUid = user.uid;
+      const profileData = {
+        fullName: dName,
+        displayName: dName,
         specialization: dSpec,
+        degree: "Therapist / Specialist",
+        experienceYears: 1,
+        bio: `Specialist in ${dSpec}.`,
+        languages: ["English"],
+        consultationMode: "Online Video & Chat",
+        startingPrice: 499,
+        contactEmail: dEmail,
+      };
+
+      // 2. Create Doctor Profile in Firestore (doctorProfiles collection)
+      await createDoctorProfile(doctorUid, profileData);
+
+      // 3. Create Doctor Application in Firestore (doctorApplications collection)
+      await submitDoctorApplication(doctorUid, profileData, []);
+
+      // 4. Create default consultation plan (doctorPlans collection)
+      await createDoctorPlan(doctorUid, {
+        name: "Standard Session",
+        description: "1-on-1 consultation session",
+        duration: "30 Mins",
+        price: 499,
+        currency: "INR",
+        sessionsCount: 1,
+        features: ["1-on-1 Session", "Follow-up Notes"],
+        active: true,
       });
-      alert("Registration successful — doctor saved to Firestore.");
+
       setShowJoin(false);
-      setDName("");
-      setDEmail("");
-      setDPass("");
-      setDSpec("");
+      setDoctorLoggedIn(true);
+      alert("✅ Doctor Registration Successful! Your profile and application have been saved to Firebase.");
     } catch (err) {
-      console.error("Register error:", err);
-      alert("Error registering doctor. Check console.");
+      console.error("Doctor registration error:", err);
+      if (err.code === "auth/email-already-in-use") {
+        setAuthError("This email is already registered. Please log in instead.");
+      } else {
+        setAuthError(err.message || "Failed to register doctor account in Firebase.");
+      }
+    } finally {
+      setAuthLoading(false);
     }
   };
-
-  const loadUsers = useCallback(async () => {
-    try {
-      const arr = await fetchAllPatients();
-      setAllUsers(arr);
-    } catch (err) {
-      console.error("Load users error:", err);
-      alert("Unable to load users.");
-    }
-  }, []);
 
   const handleDoctorLogin = async () => {
+    setAuthError("");
+    if (!loginEmail || !loginPass) {
+      setAuthError("Please enter email and password.");
+      return;
+    }
+
+    setAuthLoading(true);
     try {
-      const res = await loginDoctor(loginEmail, loginPass);
-      if (res) {
-        setDoctorLoggedIn(true);
-        setShowLogin(false);
-        await loadUsers();
-      } else {
-        alert("Invalid credentials. Make sure the doctor exists in Firestore 'doctors' collection and the password matches.");
-      }
+      const { user } = await loginWithEmail(loginEmail, loginPass);
+      if (!user) throw new Error("Invalid credentials.");
+
+      setShowLogin(false);
+      setDoctorLoggedIn(true);
+      alert("✅ Doctor Logged In successfully!");
     } catch (err) {
-      console.error("Login error:", err);
-      alert("Login failed. Check console for details.");
+      console.error("Doctor login error:", err);
+      setAuthError(err.message || "Failed to log in.");
+    } finally {
+      setAuthLoading(false);
     }
   };
-
-  useEffect(() => {
-    let t;
-    if (doctorLoggedIn) {
-      loadUsers();
-      t = setInterval(loadUsers, 60 * 1000);
-    }
-    return () => clearInterval(t);
-  }, [doctorLoggedIn, loadUsers]);
 
   return {
     location,
@@ -133,6 +163,9 @@ export const useDoctorLanding = () => {
     setDPass,
     dSpec,
     setDSpec,
+    authError,
+    setAuthError,
+    authLoading,
     doctorLoggedIn,
     allUsers,
     selectedUser,

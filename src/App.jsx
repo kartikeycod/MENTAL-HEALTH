@@ -5,6 +5,7 @@ import "./App.css";
 // 🔹 Navigation & Structural Components
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import RoleRoute from "./components/routes/RoleRoute";
 
 // 🔹 Pages & Views
 import HomePage from "./pages/Home/HomePage";
@@ -21,6 +22,18 @@ import Lesson from "./pages/Lesson";
 import PhysicalInteraction from "./pages/PhysicalInteraction";
 import LeisureActivity from "./pages/LeisureActivity";
 import AIDetectorPage from "./pages/AIDetector/AIDetectorPage";
+
+// 🩺 Marketplace & Doctor Pages
+import MarketplacePage from "./pages/marketplace/MarketplacePage";
+import DoctorDetailPage from "./pages/marketplace/DoctorDetailPage";
+import DoctorLoginPage from "./pages/auth/DoctorLoginPage";
+import DoctorSignupPage from "./pages/auth/DoctorSignupPage";
+import DoctorDashboard from "./pages/doctor/DoctorDashboard";
+import DoctorPendingPage from "./pages/doctor/DoctorPendingPage";
+
+// 👤 Patient & 🛡️ Admin Dashboards
+import PatientDashboard from "./pages/patient/PatientDashboard";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 function App() {
   return (
@@ -61,16 +74,44 @@ function App() {
           {/* 🧩 Weekly Test */}
           <Route path="/weekly-test" element={<WeeklyTest />} />
 
-          {/* 🩺 Doctor Interface */}
+          {/* 🛒 Therapist Marketplace */}
+          <Route path="/therapists" element={<MarketplacePage />} />
+          <Route path="/talk-to-therapist" element={<MarketplacePage />} />
+          <Route path="/therapists/:doctorId" element={<DoctorDetailPage />} />
+
+          {/* 🩺 Doctor Authentication & Portal */}
+          <Route path="/doctor/login" element={<DoctorLoginPage />} />
+          <Route path="/doctor/signup" element={<DoctorSignupPage />} />
+          <Route path="/doctor/pending" element={<DoctorPendingPage />} />
+          <Route
+            path="/doctor/dashboard"
+            element={
+              <RoleRoute allowedRoles={["doctor"]}>
+                <DoctorDashboard />
+              </RoleRoute>
+            }
+          />
+
+          {/* 🩺 Legacy Doctor Landing */}
           <Route path="/serenyDoctor" element={<Landing />} />
 
-          {/* 🧑‍⚕️ Doctor Dashboard Placeholder */}
+          {/* 👤 Patient Dashboard */}
           <Route
-            path="/doctor-dashboard"
+            path="/patient/dashboard"
             element={
-              <div style={{ padding: "100px", textAlign: "center" }}>
-                Doctor Dashboard Coming Soon...
-              </div>
+              <ProtectedRoute>
+                <PatientDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* 🛡️ Super Admin Portal */}
+          <Route
+            path="/admin"
+            element={
+              <RoleRoute allowedRoles={["admin"]}>
+                <AdminDashboard />
+              </RoleRoute>
             }
           />
 

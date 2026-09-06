@@ -3,7 +3,14 @@ export const COLLECTIONS = {
   LEGACY_USERS: "USERS",
   FORMS: "FORMS",
   MENTAL_HEALTH_TESTS: "MentalHealthTests",
-  DOCTORS: "doctors",
+  DOCTORS: "doctors", // Legacy doctors
+  DOCTOR_PROFILES: "doctorProfiles",
+  DOCTOR_APPLICATIONS: "doctorApplications",
+  DOCTOR_PLANS: "doctorPlans",
+  DOCTOR_REVIEWS: "doctorReviews",
+  ORDERS: "orders",
+  ADMIN_ACTIONS: "adminActions",
+  NOTIFICATIONS: "notifications",
   USER_TASKS: "userTasks",
 };
 
@@ -16,4 +23,5 @@ export const SUBCOLLECTIONS = {
 
 export const STORAGE_PATHS = {
   LEISURE_PROOFS: "leisureProofs",
+  DOCTOR_DOCUMENTS: "doctorDocuments",
 };

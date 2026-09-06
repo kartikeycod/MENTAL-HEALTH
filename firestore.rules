@@ -1,0 +1,114 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() {
+      return isAuthenticated();
+    }
+
+    function isDoctor() {
+      return isAuthenticated() && getUserData() != null && getUserData().roles.doctor == true;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isOwner(userId) && 
+        (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['roles', 'status'])) ||
+        isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Doctor Profiles Collection
+    match /doctorProfiles/{doctorId} {
+      // Anyone can read active verified doctors; doctors and admins can read any
+      allow read: if resource.data.applicationStatus == 'approved' && resource.data.publicStatus == 'active'
+                  || (isAuthenticated() && (request.auth.uid == doctorId || isAdmin()));
+      allow create: if isAuthenticated() && request.auth.uid == doctorId;
+      allow update: if isAdmin() || (
+        isAuthenticated() && request.auth.uid == doctorId &&
+        (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['verified', 'applicationStatus', 'ratingSummary', 'publicStatus']))
+      );
+      allow delete: if isAdmin();
+    }
+
+    // Doctor Applications Collection
+    match /doctorApplications/{appId} {
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.doctorUid == request.auth.uid);
+      allow create: if isAuthenticated() && request.resource.data.doctorUid == request.auth.uid;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Doctor Plans Collection
+    match /doctorPlans/{planId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin() || (isAuthenticated() && request.resource.data.doctorUid == request.auth.uid);
+    }
+
+    // Doctor Reviews Collection
+    match /doctorReviews/{reviewId} {
+      allow read: if true;
+      allow create: if isAuthenticated() && request.resource.data.patientUid == request.auth.uid;
+      allow update, delete: if isAdmin() || (isAuthenticated() && resource.data.patientUid == request.auth.uid);
+    }
+
+    // Orders Collection
+    match /orders/{orderId} {
+      allow read: if isAdmin() || (
+        isAuthenticated() && (
+          resource.data.patientUid == request.auth.uid || 
+          resource.data.doctorUid == request.auth.uid
+        )
+      );
+      allow create: if isAuthenticated() && request.resource.data.patientUid == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    // Admin Actions Collection
+    match /adminActions/{actionId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Notifications Collection
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() && resource.data.recipientUid == request.auth.uid;
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && resource.data.recipientUid == request.auth.uid;
+      allow delete: if isAdmin();
+    }
+
+    // Legacy collections backward compatibility
+    match /FORMS/{formId} {
+      allow read, write: if isAuthenticated();
+    }
+    match /MentalHealthTests/{testId} {
+      allow read, write: if isAuthenticated();
+    }
+    match /userTasks/{taskId} {
+      allow read, write: if isAuthenticated();
+    }
+    match /doctors/{docId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /USERS/{userId} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}
