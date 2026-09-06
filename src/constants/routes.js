@@ -13,4 +13,5 @@ export const ROUTES = {
   LESSON: "/lesson",
   PHYSICAL: "/physical",
   LEISURE: "/leisure",
+  AI_DETECTOR: "/ai-detector",
 };

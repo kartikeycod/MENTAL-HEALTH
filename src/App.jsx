@@ -20,6 +20,7 @@ import Landing from "./serenyDoctor/Landing";
 import Lesson from "./pages/Lesson";
 import PhysicalInteraction from "./pages/PhysicalInteraction";
 import LeisureActivity from "./pages/LeisureActivity";
+import AIDetectorPage from "./pages/AIDetector/AIDetectorPage";
 
 function App() {
   return (
@@ -77,6 +78,9 @@ function App() {
           <Route path="/lesson" element={<Lesson />} />
           <Route path="/physical" element={<PhysicalInteraction />} />
           <Route path="/leisure" element={<LeisureActivity />} />
+
+          {/* 🤖 Dedicated AI Mental Health Detector */}
+          <Route path="/ai-detector" element={<AIDetectorPage />} />
         </Routes>
       </div>
     </Router>

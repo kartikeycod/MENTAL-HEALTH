@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import logoImage from '../../images/logo.png';
 import './Navbar.css';
 import '../App.css';
@@ -13,6 +13,7 @@ import { ROUTES } from '../constants/routes';
 
 const NAV_LINKS_UI = [
   { text: 'Home', href: '/' },
+  { text: '🤖 AI Detector', href: ROUTES.AI_DETECTOR, isRoute: true },
   { text: 'About', href: '#about' },
   { text: 'Services', href: '#services' },
   { text: 'Doctors', href: '#doctors' },
@@ -71,9 +72,15 @@ const Navbar = () => {
       <div className="navbar-center">
         {NAV_LINKS_UI.map((link) => (
           <div key={link.text} className="nav-item">
-            <a href={link.href} className="nav-link">
-              {link.text}
-            </a>
+            {link.isRoute ? (
+              <Link to={link.href} className="nav-link">
+                {link.text}
+              </Link>
+            ) : (
+              <a href={link.href} className="nav-link">
+                {link.text}
+              </a>
+            )}
           </div>
         ))}
       </div>
