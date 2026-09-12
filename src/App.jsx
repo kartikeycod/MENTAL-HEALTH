@@ -22,6 +22,7 @@ import Lesson from "./pages/Lesson";
 import PhysicalInteraction from "./pages/PhysicalInteraction";
 import LeisureActivity from "./pages/LeisureActivity";
 import AIDetectorPage from "./pages/AIDetector/AIDetectorPage";
+import CheckIn from "./components/CheckIn";
 
 // 🩺 Marketplace & Doctor Pages
 import MarketplacePage from "./pages/marketplace/MarketplacePage";
@@ -122,6 +123,9 @@ function App() {
 
           {/* 🤖 Dedicated AI Mental Health Detector */}
           <Route path="/ai-detector" element={<AIDetectorPage />} />
+          
+          {/* ✅ Daily Clinical Check-In */}
+          <Route path="/checkin" element={<CheckIn />} />
         </Routes>
       </div>
     </Router>

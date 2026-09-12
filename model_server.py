@@ -365,3 +365,54 @@ def predict_mental_health(req: PredictionRequest):
 
 if __name__ == "__main__":
     uvicorn.run("model_server:app", host="0.0.0.0", port=8000, reload=False)
+
+
+class BatchPost(BaseModel):
+    text: str
+    timestamp: Optional[str] = None
+
+class BatchAnalyzeRequest(BaseModel):
+    posts: List[BatchPost]
+
+@app.post("/analyze-batch")
+def analyze_batch(req: BatchAnalyzeRequest):
+    if not model_bundle["distilbert_loaded"]:
+        raise HTTPException(status_code=503, detail="DistilBERT model not loaded.")
+
+    import torch
+    tokenizer = model_bundle["tokenizer"]
+    model = model_bundle["distilbert"]
+
+    results = []
+    for post in req.posts:
+        raw_text = post.text.strip()
+        if len(raw_text) < 5:
+            continue
+
+        norm_text = clean_and_normalize_text(raw_text)
+        inputs = tokenizer(norm_text, return_tensors="pt", truncation=True, max_length=256, padding=True)
+
+        with torch.no_grad():
+            outputs = model(**inputs)
+            probs = torch.softmax(outputs.logits, dim=1)[0]
+        
+        prob_dict = {LABELS[i]: round(float(probs[i]), 4) for i in range(len(LABELS))}
+        sorted_items = sorted(prob_dict.items(), key=lambda x: x[1], reverse=True)
+        label = sorted_items[0][0]
+        confidence = sorted_items[0][1]
+
+        ranked_classes = [
+            {"label": k, "probability": v, "percentage": round(v * 100, 1)}
+            for k, v in sorted_items
+        ]
+
+        results.append({
+            "text_snippet": raw_text[:120],
+            "prediction": label,
+            "confidence": confidence,
+            "is_crisis": RECOMMENDATIONS.get(label, {}).get("is_crisis", False),
+            "ranked_classes": ranked_classes,
+            "timestamp": post.timestamp,
+        })
+
+    return {"posts_analyzed": len(results), "results": results}
