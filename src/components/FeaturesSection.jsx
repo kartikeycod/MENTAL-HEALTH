@@ -67,14 +67,14 @@ const FeaturesSection = () => {
     }
 
     // 4️⃣ Peer-Anonymus
-    else if (pillar.link === "peer-anonymous") {
-      if (!user) {
-        alert("⚠️ Please log in to access the Peer-Anonymus chat.");
-        navigate(ROUTES.AUTH);
-        return;
-      }
-      window.location.href = "https://mlsa-chatroom.vercel.app/";
-    }
+    // else if (pillar.link === "peer-anonymous") {
+    //   if (!user) {
+    //     alert("⚠️ Please log in to access the Peer-Anonymus chat.");
+    //     navigate(ROUTES.AUTH);
+    //     return;
+    //   }
+    //   window.location.href = "https://mlsa-chatroom.vercel.app/";
+    // }
 
     // 5️⃣ Mood Tracking
     else if (pillar.link === "mood-chat") {
